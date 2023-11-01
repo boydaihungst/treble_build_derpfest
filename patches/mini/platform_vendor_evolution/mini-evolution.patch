@@ -1,0 +1,25 @@
+From 560ed3bc82c939575f64dcc333d105a77718319b Mon Sep 17 00:00:00 2001
+From: Huy Hoang <boydaihungst@gmail.com>
+Date: Tue, 31 Oct 2023 19:08:37 +0700
+Subject: [PATCH] mini evolution
+
+---
+ config/common_full_phone.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/config/common_full_phone.mk b/config/common_full_phone.mk
+index 9cb7fd9f..73c79df2 100644
+--- a/config/common_full_phone.mk
++++ b/config/common_full_phone.mk
+@@ -8,7 +8,7 @@ PRODUCT_PACKAGES += \
+ # Enable support of one-handed mode
+ PRODUCT_PRODUCT_PROPERTIES += \
+     ro.support_one_handed_mode?=true
+-
++TARGET_USES_MINI_GAPPS := true
+ # Inherit from GMS product config
+ ifeq ($(TARGET_USES_MINI_GAPPS),true)
+ $(call inherit-product, vendor/gms/gms_mini.mk)
+-- 
+2.42.0
+
