@@ -14,7 +14,6 @@ set -e
 GIT_REPO="treble_build_derpfest"
 GIT_BRANCH="A14"
 GIT_OWNER="boydaihungst"
-
 BL="$PWD/$GIT_REPO"
 OUT="out/target/product/tdgsi_arm64_ab"
 BD="$PWD/GSIs"
@@ -74,24 +73,26 @@ buildGappsVariant() {
 }
 
 buildMiniVariant() {
-    # echo "--> Building treble_arm64_bvN-mini"
-    # (cd vendor/derpfest && git am $BL/patches/mini/platform_vendor_derpfest/mini-derpfest.patch)
-    # (cd vendor/gms && git am $BL/patches/mini/platform_vendor_gms/mini-gms.patch && rm -rf product/packages/apps/YouTube)
-    # lunch treble_arm64_bvN-userdebug
-    # make -j$(nproc --all) installclean
-    # make -j$(nproc --all) systemimage
-    # (cd vendor/derpfest && git reset --hard HEAD~1)
-    # (cd vendor/gms && git reset --hard HEAD~1)
-    # mv $OUT/system.img $BD/system-treble_arm64_bvN-mini.img
+    echo "--> Building treble_arm64_bvN-mini"
+    (cd vendor/gms && git am $BL/patches/mini/platform_vendor_gms/mini-gms.patch)
+    lunch treble_arm64_bvN-userdebug
+    make -j$(nproc --all) installclean
+    make -j$(nproc --all) systemimage
+    (cd vendor/gms && git reset --hard HEAD~1)
+    mv $OUT/system.img $BD/system-treble_arm64_bvN-mini.img
     echo
 }
 
 buildVndkliteVariant() {
     echo "--> Building treble_arm64_bvN-vndklite"
     pushd sas-creator/ &>/dev/null
-      sudo bash lite-adapter.sh 64 $BD/system-treble_arm64_bvN.img
+      echo $PW | sudo -S bash lite-adapter.sh 64 $BD/system-treble_arm64_bvN.img
       cp s.img $BD/system-treble_arm64_bvN-vndklite.img
-      sudo rm -rf s.img d tmp
+      echo $PW | sudo -S  rm -rf s.img d tmp
+      # mini 
+      echo $PW | sudo -S  bash lite-adapter.sh 64 $BD/system-treble_arm64_bvN-mini.img
+      cp s.img $BD/system-treble_arm64_bvN-mini-vndklite.img
+      echo $PW | sudo -S  rm -rf s.img d tmp
     popd &>/dev/null
     echo
 }
@@ -100,9 +101,9 @@ generatePackages() {
     echo "--> Generating packages"
     xz -cv $BD/system-treble_arm64_bvN.img -T0 > "$BD/derpfest_arm64-ab-unofficial-$buildDate.img.xz"
     xz -cv $BD/system-treble_arm64_bvN-vndklite.img -T0 > "$BD/derpfest_arm64-ab-vndklite-unofficial-$buildDate.img.xz"
-    # xz -cv $BD/system-treble_arm64_bvN-mini.img -T0 > "$BD/derpfest_arm64-ab-mini-unofficial-$buildDate.img.xz"
-    # xz -cv $BD/system-treble_arm64_bvN-mini-vndklite.img -T0 > "$BD/derpfest_arm64-ab-mini-vndklite-unofficial-$buildDate.img.xz"
-    # rm -rf $BD/system-*.img
+    xz -cv $BD/system-treble_arm64_bvN-mini.img -T0 > "$BD/derpfest_arm64-ab-mini-unofficial-$buildDate.img.xz"
+    xz -cv $BD/system-treble_arm64_bvN-mini-vndklite.img -T0 > "$BD/derpfest_arm64-ab-mini-vndklite-unofficial-$buildDate.img.xz"
+    rm -rf $BD/system-*.img
     echo
 }
 
@@ -149,7 +150,7 @@ release() {
           find $BD/ -name "derpfest_*.img.xz" | sort | {
             while read file; do
               filename="$(basename $file)"
-              gh release upload $version "$file" --repo boydaihungst/treble_build_derpfest --clobber
+              gh release upload $version "$file" --repo $GIT_OWNER/$GIT_REPO --clobber
               rm -rf $file
             done
           }
@@ -164,12 +165,12 @@ release() {
     fi
 }
 
-# initRepos
-# syncRepos
-# applyPatches
+initRepos
+syncRepos
+applyPatches
 setupEnv
-# buildGappsVariant
-# buildMiniVariant
+buildGappsVariant
+buildMiniVariant
 buildVndkliteVariant
 generatePackages
 generateOta

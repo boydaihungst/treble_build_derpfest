@@ -1,6 +1,6 @@
-From bb14ee61b638fe55c8569a2bf227f9eb252cf07d Mon Sep 17 00:00:00 2001
+From 553880c6be7e356f1771021fb5dc02e9a0ba3177 Mon Sep 17 00:00:00 2001
 From: Huy Hoang <boydaihungst@gmail.com>
-Date: Thu, 2 Nov 2023 07:07:19 +0700
+Date: Thu, 2 Nov 2023 23:08:23 +0700
 Subject: [PATCH] mini gms
 
 ---
@@ -8,7 +8,7 @@ Subject: [PATCH] mini gms
  1 file changed, 17 deletions(-)
 
 diff --git a/common/common-vendor.mk b/common/common-vendor.mk
-index 105391e..71c7ec1 100644
+index 105391e..3451ea7 100644
 --- a/common/common-vendor.mk
 +++ b/common/common-vendor.mk
 @@ -6,7 +6,6 @@ PRODUCT_SOONG_NAMESPACES += \
@@ -19,16 +19,16 @@ index 105391e..71c7ec1 100644
      vendor/gms/common/proprietary/product/app/TrichromeLibrary/TrichromeLibrary.apk.gz:$(TARGET_COPY_OUT_PRODUCT)/app/TrichromeLibrary/TrichromeLibrary.apk.gz \
      vendor/gms/common/proprietary/product/app/WebViewGoogle/WebViewGoogle.apk.gz:$(TARGET_COPY_OUT_PRODUCT)/app/WebViewGoogle/WebViewGoogle.apk.gz \
      vendor/gms/common/proprietary/product/etc/default-permissions/default-permissions.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/default-permissions/default-permissions.xml \
-@@ -89,19 +88,13 @@ PRODUCT_COPY_FILES += \
+@@ -89,19 +88,15 @@ PRODUCT_COPY_FILES += \
  PRODUCT_PACKAGES += \
      GoogleExtShared \
      GooglePrintRecommendationService \
 -    DocumentsUIGoogle \
      GoogleExtServices \
--    GooglePackageInstaller \
+     GooglePackageInstaller \
      TagGoogle \
 -    CalculatorGooglePrebuilt \
--    CalendarGooglePrebuilt \
+     CalendarGooglePrebuilt \
 -    Chrome-Stub \
      DevicePolicyPrebuilt \
      GoogleContacts \
@@ -39,13 +39,13 @@ index 105391e..71c7ec1 100644
      MarkupGoogle \
      ModuleMetadataGoogle \
      NgaResources \
-@@ -109,19 +102,13 @@ PRODUCT_PACKAGES += \
+@@ -109,25 +104,17 @@ PRODUCT_PACKAGES += \
      PixelThemesStub \
      PixelWallpapers2020 \
      PrebuiltDeskClockGoogle \
 -    PrebuiltGmail \
 -    SoundAmplifierPrebuilt \
-     SoundPickerPrebuilt \
+-    SoundPickerPrebuilt \
      TrichromeLibrary-Stub \
      WebViewGoogle-Stub \
 -    YouTube \
@@ -59,6 +59,12 @@ index 105391e..71c7ec1 100644
      GoogleDialer \
      GoogleOneTimeInitializer \
      GoogleRestorePrebuilt \
+     PartnerSetupPrebuilt \
+     Phonesky \
+-    PixelLiveWallpaperPrebuilt \
+     PrebuiltBugle \
+     PrebuiltGmsCoreSc \
+     PrebuiltGmsCoreSc_AdsDynamite \
 @@ -139,13 +126,10 @@ PRODUCT_PACKAGES += \
      PrebuiltGmsCoreSc_MapsDynamite \
      PrebuiltGmsCoreSc_MeasurementDynamite \
