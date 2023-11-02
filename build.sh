@@ -17,7 +17,8 @@ GIT_OWNER="boydaihungst"
 BL="$PWD/$GIT_REPO"
 OUT="out/target/product/tdgsi_arm64_ab"
 BD="$PWD/GSIs"
-
+# Linux user password
+PW=$1
 buildDate="$(date +%Y%m%d)"
 version="$(date +v%Y.%m.%d)"
 
@@ -85,6 +86,10 @@ buildMiniVariant() {
 
 buildVndkliteVariant() {
     echo "--> Building treble_arm64_bvN-vndklite"
+    if [[ -z "${PW}" ]]; then
+      echo "!!! No user password, No vndklite build"
+      return
+    fi
     pushd sas-creator/ &>/dev/null
       echo $PW | sudo -S bash lite-adapter.sh 64 $BD/system-treble_arm64_bvN.img
       cp s.img $BD/system-treble_arm64_bvN-vndklite.img
