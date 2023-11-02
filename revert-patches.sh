@@ -25,3 +25,4 @@ revert() {
 revert pre
 revert trebledroid
 revert misc
+revert mini

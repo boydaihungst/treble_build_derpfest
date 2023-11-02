@@ -28,7 +28,7 @@ timestamp="$START"
 initRepos() {
     if [ ! -d .repo ]; then
         echo "--> Initializing workspace"
-        repo init -u https://github.com/DerpFest-AOSP/manifest.git -b 14
+        repo init -u https://github.com/boydaihungst/derpfest_manifest -b 14
         echo
 
         echo "--> Preparing local manifest"
@@ -166,14 +166,14 @@ release() {
 
 # initRepos
 # syncRepos
-applyPatches
+# applyPatches
 setupEnv
-buildGappsVariant
+# buildGappsVariant
 # buildMiniVariant
 buildVndkliteVariant
-# generatePackages
-# generateOta
-# release
+generatePackages
+generateOta
+release
 END=$(date +%s)
 ELAPSEDM=$(($(($END-$START))/60))
 ELAPSEDS=$(($(($END-$START))-$ELAPSEDM*60))
