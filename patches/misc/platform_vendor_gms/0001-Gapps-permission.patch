@@ -1,0 +1,80 @@
+From 352a8fac8b950140b57ffd8303cb51a5a3882e2b Mon Sep 17 00:00:00 2001
+From: Huy Hoang <boydaihungst@gmail.com>
+Date: Fri, 3 Nov 2023 09:46:20 +0700
+Subject: [PATCH] Gapps permission
+
+---
+ .../default-permissions.xml                   | 56 +++++++++++++++++++
+ 1 file changed, 56 insertions(+)
+
+diff --git a/common/proprietary/product/etc/default-permissions/default-permissions.xml b/common/proprietary/product/etc/default-permissions/default-permissions.xml
+index e792f5c..783e535 100644
+--- a/common/proprietary/product/etc/default-permissions/default-permissions.xml
++++ b/common/proprietary/product/etc/default-permissions/default-permissions.xml
+@@ -40,7 +40,63 @@
+       <permission name="android.permission.READ_CALENDAR" fixed="false"/>
+     </exception>
+     -->
++  <!-- Carrier services: Fix rcs -->
++    <exception
++            package="com.google.android.ims">
++        <permission name="android.permission.ACCESS_FINE_LOCATION" fixed="false"/>
++        <permission name="android.permission.ACCESS_BACKGROUND_LOCATION" fixed="false"/>
++        <permission name="android.permission.ACCESS_RESTRICTED_SETTINGS" fixed="false"/>
++        <!-- Call -->
++        <permission name="android.permission.PROCESS_OUTGOING_CALLS" fixed="false"/>
++        <permission name="android.permission.CALL_PHONE" fixed="false"/>
++        <!-- Phone -->
++        <permission name="android.permission.READ_PHONE_STATE" fixed="false"/>
++        <permission name="android.permission.READ_CALL_LOG" fixed="false"/>
++        <permission name="android.permission.WRITE_CALL_LOG" fixed="false"/>
++        <!-- SMS -->
++        <permission name="android.permission.RECEIVE_SMS" fixed="false"/>
++        <!-- Contacts -->
++        <permission name="android.permission.READ_CONTACTS" fixed="false"/>
++    </exception>
+ 
++    <!-- wear os-->
++    <exception
++            package="com.google.android.wearable.app">
++        <permission name="android.permission.ACCESS_FINE_LOCATION" fixed="false"/>
++        <!-- Camera-->
++        <permission name="android.permission.CAMERA" fixed="false"/>
++        <!-- Call -->
++        <permission name="android.permission.PROCESS_OUTGOING_CALLS" fixed="false"/>
++        <permission name="android.permission.CALL_PHONE" fixed="false"/>
++        <permission name="android.permission.ANSWER_PHONE_CALLS" fixed="false"/>
++        <!-- Phone -->
++        <permission name="android.permission.READ_PHONE_STATE" fixed="false"/>
++        <permission name="android.permission.READ_CALL_LOG" fixed="false"/>
++        <permission name="android.permission.WRITE_CALL_LOG" fixed="false"/>
++        <!-- SMS -->
++        <permission name="android.permission.RECEIVE_SMS" fixed="false"/>
++        <permission name="android.permission.READ_SMS" fixed="false"/>
++        <permission name="android.permission.SEND_SMS" fixed="false"/>
++        <!-- Calendar -->
++        <permission name="android.permission.READ_CALENDAR" fixed="false"/>
++        <!-- Contacts -->
++        <permission name="android.permission.READ_CONTACTS" fixed="false"/>
++        <permission name="android.permission.GET_ACCOUNTS" fixed="false"/>
++        <!-- Notification -->
++        <permission name="android.permission.POST_NOTIFICATIONS" fixed="false"/>
++        <permission name="android.permission.BLUETOOTH_CONNECT" fixed="false"/>
++        <permission name="android.permission.BLUETOOTH_SCAN" fixed="false"/>
++        <permission name="android.permission.ACCESS_RESTRICTED_SETTINGS" fixed="false"/>
++    </exception>
++    <exception
++            package="com.google.android.apps.messaging">
++        <permission name="android.permission.WRITE_SMS" fixed="false"/>
++        <permission name="android.permission.READ_DEVICE_IDENTIFIERS" fixed="false"/>
++    </exception>
++    <exception
++            package="com.google.android.apps.photos">
++        <permission name="android.permission.MANAGE_MEDIA" fixed="false"/>
++    </exception>
+     <exception
+             package="com.google.intelligence.sense">
+         <!-- Record Audio -->
+-- 
+2.42.0
+

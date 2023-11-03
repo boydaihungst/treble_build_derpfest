@@ -1,0 +1,62 @@
+From 5c622ccab04da1f9f9ff7a45a258ade162554e67 Mon Sep 17 00:00:00 2001
+From: Huy Hoang <boydaihungst@gmail.com>
+Date: Fri, 3 Nov 2023 08:49:20 +0700
+Subject: [PATCH] add udfps dimming and round corner nubia 6 series
+
+---
+ Nubia/RedMagic6series/res/values/config.xml | 29 +++++++++++++++++++++
+ Nubia/RedMagic6series/res/values/dimens.xml |  1 +
+ 2 files changed, 30 insertions(+)
+
+diff --git a/Nubia/RedMagic6series/res/values/config.xml b/Nubia/RedMagic6series/res/values/config.xml
+index 7c15f67..3bd3a47 100644
+--- a/Nubia/RedMagic6series/res/values/config.xml
++++ b/Nubia/RedMagic6series/res/values/config.xml
+@@ -636,4 +636,33 @@
+     <item>1839</item> <!-- <item>sensorLocationY</item> -->
+     <item>95</item>   <!-- <item>sensorRadius</item> -->
+   </integer-array>
++
++  <!-- Flag to enable framework dimming for udfps -->
++  <bool name="config_udfpsFrameworkDimming">true</bool>
++
++  <!-- Array of brightness-alpha lut for framework dimming -->
++  <string-array name="config_udfpsDimmingBrightnessAlphaArray" translatable="false">
++    <item>0,250</item>
++    <item>1,235</item>
++    <item>2,225</item>
++    <item>3,220</item>
++    <item>8,190</item>
++    <item>16,177</item>
++    <item>27,156</item>
++    <item>41,137</item>
++    <item>61,120</item>
++    <item>80,103</item>
++    <item>104,87</item>
++    <item>130,70</item>
++    <item>158,53</item>
++    <item>188,37</item>
++    <item>221,22</item>
++    <item>250,10</item>
++    <item>255,5</item>
++  </string-array>
++
++  <!-- The amount of delay to add when disabling the dimming.
++         This is used to prevent flickers due to the dimming being disabled
++         before the screen has had chance to switch out of HBM mode -->
++  <integer name="config_udfpsDimmingDisableDelay">35</integer>
+ </resources>
+diff --git a/Nubia/RedMagic6series/res/values/dimens.xml b/Nubia/RedMagic6series/res/values/dimens.xml
+index 9c200b8..d91d7f7 100644
+--- a/Nubia/RedMagic6series/res/values/dimens.xml
++++ b/Nubia/RedMagic6series/res/values/dimens.xml
+@@ -1,5 +1,6 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <resources>
+     <dimen name="rounded_corner_radius">20.0dip</dimen>
++    <dimen name="rounded_corner_content_padding">35.0dip</dimen>
+     <dimen name="status_bar_height_portrait">37.0dip</dimen>
+ </resources>
+-- 
+2.42.0
+
