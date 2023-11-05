@@ -1,0 +1,305 @@
+From bb0d2373b0d2ca68b93d8630d864a6c0774c6ab4 Mon Sep 17 00:00:00 2001
+From: Huy Hoang <boydaihungst@gmail.com>
+Date: Mon, 6 Nov 2023 00:34:18 +0700
+Subject: [PATCH] fix nubia hbm
+
+---
+ Nubia/RedMagic6series/res/values/config.xml | 270 ++++++++++++++++++++
+ Nubia/RedMagic6series/res/values/dimens.xml |   5 +-
+ 2 files changed, 273 insertions(+), 2 deletions(-)
+
+diff --git a/Nubia/RedMagic6series/res/values/config.xml b/Nubia/RedMagic6series/res/values/config.xml
+index 7c15f67..30f20e5 100644
+--- a/Nubia/RedMagic6series/res/values/config.xml
++++ b/Nubia/RedMagic6series/res/values/config.xml
+@@ -636,4 +636,274 @@
+     <item>1839</item> <!-- <item>sensorLocationY</item> -->
+     <item>95</item>   <!-- <item>sensorRadius</item> -->
+   </integer-array>
++  <!-- Use framework FOD dimming instead of kernel dimming -->
++  <bool name="config_udfpsFrameworkDimming">true</bool>
++
++  <!-- Array of brightness-alpha lut for framework dimming -->
++  <string-array name="config_udfpsDimmingBrightnessAlphaArray" translatable="false">
++    <item>0-336-235</item>
++    <item>1-336-235</item>
++    <item>2-336-235</item>
++    <item>3-336-234</item>
++    <item>4-336-234</item>
++    <item>5-336-234</item>
++    <item>6-336-233</item>
++    <item>7-336-232</item>
++    <item>8-336-232</item>
++    <item>9-336-231</item>
++    <item>10-336-231</item>
++    <item>11-336-230</item>
++    <item>12-336-230</item>
++    <item>13-336-229</item>
++    <item>14-336-229</item>
++    <item>15-336-228</item>
++    <item>16-336-228</item>
++    <item>17-336-227</item>
++    <item>18-336-227</item>
++    <item>19-336-226</item>
++    <item>20-336-226</item>
++    <item>21-336-225</item>
++    <item>22-352-225</item>
++    <item>23-368-224</item>
++    <item>24-384-224</item>
++    <item>25-400-223</item>
++    <item>26-416-223</item>
++    <item>27-432-222</item>
++    <item>28-448-222</item>
++    <item>29-464-221</item>
++    <item>30-480-220</item>
++    <item>31-496-220</item>
++    <item>32-512-219</item>
++    <item>33-528-219</item>
++    <item>34-544-218</item>
++    <item>35-560-218</item>
++    <item>36-576-217</item>
++    <item>37-592-216</item>
++    <item>38-608-216</item>
++    <item>39-624-216</item>
++    <item>40-640-216</item>
++    <item>41-656-216</item>
++    <item>42-672-215</item>
++    <item>43-688-215</item>
++    <item>44-704-214</item>
++    <item>45-720-214</item>
++    <item>46-736-213</item>
++    <item>47-752-212</item>
++    <item>48-768-212</item>
++    <item>49-784-211</item>
++    <item>50-800-211</item>
++    <item>51-816-210</item>
++    <item>52-832-209</item>
++    <item>53-848-208</item>
++    <item>54-864-208</item>
++    <item>55-880-207</item>
++    <item>56-896-206</item>
++    <item>57-912-205</item>
++    <item>58-928-204</item>
++    <item>59-944-204</item>
++    <item>60-960-203</item>
++    <item>61-976-202</item>
++    <item>62-992-201</item>
++    <item>63-1008-200</item>
++    <item>64-1024-199</item>
++    <item>65-1040-199</item>
++    <item>66-1056-198</item>
++    <item>67-1072-198</item>
++    <item>68-1088-197</item>
++    <item>69-1104-196</item>
++    <item>70-1120-195</item>
++    <item>71-1136-193</item>
++    <item>72-1152-192</item>
++    <item>73-1168-191</item>
++    <item>74-1184-190</item>
++    <item>75-1200-189</item>
++    <item>76-1216-188</item>
++    <item>77-1232-187</item>
++    <item>78-1248-187</item>
++    <item>79-1264-186</item>
++    <item>80-1280-185</item>
++    <item>81-1296-184</item>
++    <item>82-1312-183</item>
++    <item>83-1328-182</item>
++    <item>84-1344-181</item>
++    <item>85-1360-181</item>
++    <item>86-1376-180</item>
++    <item>87-1392-180</item>
++    <item>88-1408-179</item>
++    <item>89-1424-178</item>
++    <item>90-1440-177</item>
++    <item>91-1456-176</item>
++    <item>92-1472-175</item>
++    <item>93-1488-174</item>
++    <item>94-1504-173</item>
++    <item>95-1520-172</item>
++    <item>96-1536-171</item>
++    <item>97-1552-170</item>
++    <item>98-1568-169</item>
++    <item>99-1584-168</item>
++    <item>100-1600-167</item>
++    <item>101-1616-166</item>
++    <item>102-1632-165</item>
++    <item>103-1648-164</item>
++    <item>104-1664-163</item>
++    <item>105-1680-162</item>
++    <item>106-1696-161</item>
++    <item>107-1712-160</item>
++    <item>108-1728-159</item>
++    <item>109-1744-158</item>
++    <item>110-1760-158</item>
++    <item>111-1776-157</item>
++    <item>112-1792-157</item>
++    <item>113-1808-156</item>
++    <item>114-1824-155</item>
++    <item>115-1840-154</item>
++    <item>116-1856-153</item>
++    <item>117-1872-152</item>
++    <item>118-1888-151</item>
++    <item>119-1904-150</item>
++    <item>120-1920-149</item>
++    <item>121-1936-149</item>
++    <item>122-1952-148</item>
++    <item>123-1968-147</item>
++    <item>124-1984-146</item>
++    <item>125-2000-145</item>
++    <item>126-2016-144</item>
++    <item>127-2032-143</item>
++    <item>128-2048-142</item>
++    <item>129-2064-141</item>
++    <item>130-2080-140</item>
++    <item>131-2096-140</item>
++    <item>132-2112-139</item>
++    <item>133-2128-138</item>
++    <item>134-2144-137</item>
++    <item>135-2160-136</item>
++    <item>136-2176-135</item>
++    <item>137-2192-134</item>
++    <item>138-2208-134</item>
++    <item>139-2224-133</item>
++    <item>140-2240-132</item>
++    <item>141-2256-131</item>
++    <item>142-2272-130</item>
++    <item>143-2288-129</item>
++    <item>144-2304-128</item>
++    <item>145-2320-127</item>
++    <item>146-2336-126</item>
++    <item>147-2352-125</item>
++    <item>148-2368-124</item>
++    <item>149-2384-123</item>
++    <item>150-2400-123</item>
++    <item>151-2416-122</item>
++    <item>152-2432-121</item>
++    <item>153-2448-120</item>
++    <item>154-2464-119</item>
++    <item>155-2480-118</item>
++    <item>156-2496-117</item>
++    <item>157-2512-116</item>
++    <item>158-2528-115</item>
++    <item>159-2544-115</item>
++    <item>160-2560-114</item>
++    <item>161-2576-114</item>
++    <item>162-2592-113</item>
++    <item>163-2608-112</item>
++    <item>164-2624-111</item>
++    <item>165-2640-110</item>
++    <item>166-2656-109</item>
++    <item>167-2672-108</item>
++    <item>168-2688-107</item>
++    <item>169-2704-106</item>
++    <item>170-2720-106</item>
++    <item>171-2736-105</item>
++    <item>172-2752-105</item>
++    <item>173-2768-104</item>
++    <item>174-2784-103</item>
++    <item>175-2800-102</item>
++    <item>176-2816-102</item>
++    <item>177-2832-101</item>
++    <item>178-2848-100</item>
++    <item>179-2864-100</item>
++    <item>180-2880-99</item>
++    <item>181-2896-98</item>
++    <item>182-2912-97</item>
++    <item>183-2928-96</item>
++    <item>184-2944-95</item>
++    <item>185-2960-94</item>
++    <item>186-2976-93</item>
++    <item>187-2992-92</item>
++    <item>188-3008-91</item>
++    <item>189-3024-90</item>
++    <item>190-3040-90</item>
++    <item>191-3056-89</item>
++    <item>192-3072-89</item>
++    <item>193-3088-88</item>
++    <item>194-3104-87</item>
++    <item>195-3120-86</item>
++    <item>196-3136-85</item>
++    <item>197-3152-85</item>
++    <item>198-3168-84</item>
++    <item>199-3184-83</item>
++    <item>200-3200-82</item>
++    <item>201-3216-81</item>
++    <item>202-3232-80</item>
++    <item>203-3248-79</item>
++    <item>204-3264-78</item>
++    <item>205-3280-77</item>
++    <item>206-3296-77</item>
++    <item>207-3312-76</item>
++    <item>208-3328-75</item>
++    <item>209-3344-75</item>
++    <item>210-3360-74</item>
++    <item>211-3376-73</item>
++    <item>212-3392-72</item>
++    <item>213-3408-72</item>
++    <item>214-3424-71</item>
++    <item>215-3440-70</item>
++    <item>216-3456-69</item>
++    <item>217-3472-68</item>
++    <item>218-3488-67</item>
++    <item>219-3504-66</item>
++    <item>220-3520-65</item>
++    <item>221-3536-64</item>
++    <item>222-3552-63</item>
++    <item>223-3568-63</item>
++    <item>224-3584-62</item>
++    <item>225-3600-62</item>
++    <item>226-3616-61</item>
++    <item>227-3632-61</item>
++    <item>228-3648-60</item>
++    <item>229-3664-59</item>
++    <item>230-3680-58</item>
++    <item>231-3696-58</item>
++    <item>232-3712-57</item>
++    <item>233-3728-56</item>
++    <item>234-3744-55</item>
++    <item>235-3760-54</item>
++    <item>236-3776-53</item>
++    <item>237-3792-52</item>
++    <item>238-3808-51</item>
++    <item>239-3824-51</item>
++    <item>240-3840-50</item>
++    <item>241-3856-49</item>
++    <item>242-3872-48</item>
++    <item>243-3888-45</item>
++    <item>244-3904-46</item>
++    <item>245-3920-46</item>
++    <item>246-3936-45</item>
++    <item>247-3952-44</item>
++    <item>248-3968-44</item>
++    <item>249-3984-43</item>
++    <item>250-4000-42</item>
++    <item>251-4016-42</item>
++    <item>252-4032-41</item>
++    <item>253-4048-40</item>
++    <item>254-4064-39</item>
++    <item>255-4095-38</item>
++  </string-array>
++
++  <!--The
++  amount of delay to add when disabling the dimming.
++         This is used to prevent flickers due to the dimming being disabled
++         before the screen has had chance to switch out of HBM mode -->
++  <integer name="config_udfpsDimmingDisableDelay">5</integer>
++  <integer name="config_udfpsDimmingEnableDelay">5</integer>
++
+ </resources>
+diff --git a/Nubia/RedMagic6series/res/values/dimens.xml b/Nubia/RedMagic6series/res/values/dimens.xml
+index 9c200b8..3f649e0 100644
+--- a/Nubia/RedMagic6series/res/values/dimens.xml
++++ b/Nubia/RedMagic6series/res/values/dimens.xml
+@@ -1,5 +1,6 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <resources>
+-    <dimen name="rounded_corner_radius">20.0dip</dimen>
+-    <dimen name="status_bar_height_portrait">37.0dip</dimen>
++  <dimen name="rounded_corner_radius">20.0dip</dimen>
++  <dimen name="rounded_corner_content_padding">35.0dip</dimen>
++  <dimen name="status_bar_height_portrait">37.0dip</dimen>
+ </resources>
+-- 
+2.42.1
+

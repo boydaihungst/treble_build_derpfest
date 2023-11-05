@@ -8,7 +8,7 @@ To get started with building DerpFest GSI, you'll need to get familiar with [Git
 
 [EndeavouOS/arch based distros](https://github.com/ponces/treble_build_aosp/issues/11#issuecomment-1760898373)
 
-- Create a new working directory for your Evolution X build and navigate to it:
+- Create a new working directory for your DerpFest build and navigate to it:
 
     ```sh
     mkdir derpfest; cd derpfest

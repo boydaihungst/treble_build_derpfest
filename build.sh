@@ -108,7 +108,6 @@ generatePackages() {
 	xz -cv $BD/system-treble_arm64_bvN-vndklite.img -T0 >"$BD/derpfest_arm64-ab-vndklite-unofficial-$buildDate.img.xz"
 	xz -cv $BD/system-treble_arm64_bvN-mini.img -T0 >"$BD/derpfest_arm64-ab-mini-unofficial-$buildDate.img.xz"
 	xz -cv $BD/system-treble_arm64_bvN-mini-vndklite.img -T0 >"$BD/derpfest_arm64-ab-mini-vndklite-unofficial-$buildDate.img.xz"
-	rm -rf $BD/system-*.img
 	echo
 }
 
@@ -178,7 +177,7 @@ buildMiniVariant
 buildVndkliteVariant
 generatePackages
 generateOta
-# release
+release
 END=$(date +%s)
 ELAPSEDM=$(($(($END - $START)) / 60))
 ELAPSEDS=$(($(($END - $START)) - $ELAPSEDM * 60))
