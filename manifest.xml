@@ -5,7 +5,7 @@
   <project name="TrebleDroid/vendor_hardware_overlay" path="vendor/hardware_overlay" remote="github"
     revision="pie" />
   <project name="TrebleDroid/vendor_interfaces" path="vendor/interfaces" remote="github"
-    revision="android-14.0" />
+    revision="android-13.0" />
   <project name="AndyCGYan/android_packages_apps_QcRilAm" path="packages/apps/QcRilAm"
     remote="github" revision="master" />
   <project name="platform/prebuilts/vndk/v28" path="prebuilts/vndk/v28" remote="aosp"
