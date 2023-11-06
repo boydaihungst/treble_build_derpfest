@@ -26,7 +26,7 @@ timestamp="$START"
 
 initRepos() {
 		echo "--> Initializing workspace"
-		repo init -u https://github.com/boydaihungst/derpfest_manifest -b 14
+		repo init -u https://github.com/DerpFest-AOSP/manifest -b 14
 		echo
 
 		echo "--> Preparing local manifest"
