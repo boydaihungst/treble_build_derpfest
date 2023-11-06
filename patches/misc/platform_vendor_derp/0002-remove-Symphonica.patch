@@ -1,14 +1,14 @@
-From cfa76b0e51f8b6de4845ef59263cade5b99ed037 Mon Sep 17 00:00:00 2001
-From: Huy Hoang <boydaihungst@gmail.com>
-Date: Mon, 6 Nov 2023 08:15:11 +0700
-Subject: [PATCH] Remove music player Gramophone
+From a36683e51790f1dab6f0d1650affa11ea5b009be Mon Sep 17 00:00:00 2001
+From: KoysX <2685697179b@gmail.com>
+Date: Mon, 31 Jul 2023 23:29:47 +0800
+Subject: [PATCH] remove-Symphonica
 
 ---
  config/common_full.mk | 4 ----
  1 file changed, 4 deletions(-)
 
 diff --git a/config/common_full.mk b/config/common_full.mk
-index 28ece346..006ec45c 100644
+index 95cd28c..006ec45 100644
 --- a/config/common_full.mk
 +++ b/config/common_full.mk
 @@ -3,10 +3,6 @@ $(call inherit-product, vendor/derp/config/common_mobile.mk)
@@ -17,11 +17,11 @@ index 28ece346..006ec45c 100644
  
 -# Apps
 -PRODUCT_PACKAGES += \
--    Gramophone
+-    Symphonica
 -
  ifneq ($(PRODUCT_NO_CAMERA),true)
  PRODUCT_PACKAGES += \
      Flash
 -- 
-2.42.1
+2.34.1
 
