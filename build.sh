@@ -25,8 +25,6 @@ START=$(date +%s)
 timestamp="$START"
 
 initRepos() {
-
-	if [ ! -d .repo ]; then
 		echo "--> Initializing workspace"
 		repo init -u https://github.com/boydaihungst/derpfest_manifest -b 14
 		echo
@@ -35,7 +33,6 @@ initRepos() {
 		mkdir -p .repo/local_manifests
 		cp $BL/manifest.xml .repo/local_manifests/
 		echo
-	fi
 }
 
 syncRepos() {
