@@ -28,7 +28,7 @@ initRepos() {
 
 	if [ ! -d .repo ]; then
 		echo "--> Initializing workspace"
-		repo init -u https://github.com/boydaihungst/derpfest_manifest -b 14
+		repo init -u https://github.com/DerpFest-AOSP/derpfest_manifest -b 14
 		echo
 
 		echo "--> Preparing local manifest"
@@ -105,9 +105,11 @@ buildVndkliteVariant() {
 generatePackages() {
 	echo "--> Generating packages"
 	xz -cv $BD/system-treble_arm64_bvN.img -T0 >"$BD/derpfest_arm64-ab-unofficial-$buildDate.img.xz"
-	xz -cv $BD/system-treble_arm64_bvN-vndklite.img -T0 >"$BD/derpfest_arm64-ab-vndklite-unofficial-$buildDate.img.xz"
 	xz -cv $BD/system-treble_arm64_bvN-mini.img -T0 >"$BD/derpfest_arm64-ab-mini-unofficial-$buildDate.img.xz"
-	xz -cv $BD/system-treble_arm64_bvN-mini-vndklite.img -T0 >"$BD/derpfest_arm64-ab-mini-vndklite-unofficial-$buildDate.img.xz"
+	if [[ -n "${PW}" ]]; then
+    xz -cv $BD/system-treble_arm64_bvN-vndklite.img -T0 >"$BD/derpfest_arm64-ab-vndklite-unofficial-$buildDate.img.xz"
+    xz -cv $BD/system-treble_arm64_bvN-mini-vndklite.img -T0 >"$BD/derpfest_arm64-ab-mini-vndklite-unofficial-$buildDate.img.xz"
+	fi
 	echo
 }
 

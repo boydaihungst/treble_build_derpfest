@@ -1,0 +1,39 @@
+From ce77a689bb3e90b359422dc0c594a2cd6351fef0 Mon Sep 17 00:00:00 2001
+From: Huy Hoang <boydaihungst@gmail.com>
+Date: Mon, 6 Nov 2023 21:58:05 +0700
+Subject: [PATCH] update manifests
+
+---
+ build.sh     | 2 +-
+ manifest.xml | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/build.sh b/build.sh
+index f742561..fea5f50 100755
+--- a/build.sh
++++ b/build.sh
+@@ -26,7 +26,7 @@ timestamp="$START"
+ 
+ initRepos() {
+ 		echo "--> Initializing workspace"
+-		repo init -u https://github.com/boydaihungst/derpfest_manifest -b 14
++		repo init -u https://github.com/DerpFest-AOSP/manifest -b 14
+ 		echo
+ 
+ 		echo "--> Preparing local manifest"
+diff --git a/manifest.xml b/manifest.xml
+index 0c12691..ec281d6 100644
+--- a/manifest.xml
++++ b/manifest.xml
+@@ -5,7 +5,7 @@
+   <project name="TrebleDroid/vendor_hardware_overlay" path="vendor/hardware_overlay" remote="github"
+     revision="pie" />
+   <project name="TrebleDroid/vendor_interfaces" path="vendor/interfaces" remote="github"
+-    revision="android-13.0" />
++    revision="android-14.0" />
+   <project name="AndyCGYan/android_packages_apps_QcRilAm" path="packages/apps/QcRilAm"
+     remote="github" revision="master" />
+   <project name="platform/prebuilts/vndk/v28" path="prebuilts/vndk/v28" remote="aosp"
+-- 
+2.42.1
+
