@@ -1,12 +1,11 @@
-From bb0d2373b0d2ca68b93d8630d864a6c0774c6ab4 Mon Sep 17 00:00:00 2001
+
 From: Huy Hoang <boydaihungst@gmail.com>
 Date: Mon, 6 Nov 2023 00:34:18 +0700
 Subject: [PATCH] fix nubia hbm
 
 ---
  Nubia/RedMagic6series/res/values/config.xml | 270 ++++++++++++++++++++
- Nubia/RedMagic6series/res/values/dimens.xml |   5 +-
- 2 files changed, 273 insertions(+), 2 deletions(-)
+ 1 files changed, 270 insertions(+)
 
 diff --git a/Nubia/RedMagic6series/res/values/config.xml b/Nubia/RedMagic6series/res/values/config.xml
 index 7c15f67..30f20e5 100644
@@ -283,23 +282,9 @@ index 7c15f67..30f20e5 100644
 +  amount of delay to add when disabling the dimming.
 +         This is used to prevent flickers due to the dimming being disabled
 +         before the screen has had chance to switch out of HBM mode -->
-+  <integer name="config_udfpsDimmingDisableDelay">5</integer>
++  <integer name="config_udfpsDimmingDisableDelay">1</integer>
 +  <integer name="config_udfpsDimmingEnableDelay">5</integer>
 +
  </resources>
-diff --git a/Nubia/RedMagic6series/res/values/dimens.xml b/Nubia/RedMagic6series/res/values/dimens.xml
-index 9c200b8..3f649e0 100644
---- a/Nubia/RedMagic6series/res/values/dimens.xml
-+++ b/Nubia/RedMagic6series/res/values/dimens.xml
-@@ -1,5 +1,6 @@
- <?xml version="1.0" encoding="utf-8"?>
- <resources>
--    <dimen name="rounded_corner_radius">20.0dip</dimen>
--    <dimen name="status_bar_height_portrait">37.0dip</dimen>
-+  <dimen name="rounded_corner_radius">20.0dip</dimen>
-+  <dimen name="rounded_corner_content_padding">35.0dip</dimen>
-+  <dimen name="status_bar_height_portrait">37.0dip</dimen>
- </resources>
 -- 
 2.42.1
-

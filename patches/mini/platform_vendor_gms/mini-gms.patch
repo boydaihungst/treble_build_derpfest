@@ -4,8 +4,8 @@ Date: Thu, 2 Nov 2023 23:08:23 +0700
 Subject: [PATCH] mini gms
 
 ---
- common/common-vendor.mk | 17 -----------------
- 1 file changed, 17 deletions(-)
+ common/common-vendor.mk | 16 ----------------
+ 1 file changed, 16 deletions(-)
 
 diff --git a/common/common-vendor.mk b/common/common-vendor.mk
 index 105391e..3451ea7 100644
@@ -45,7 +45,7 @@ index 105391e..3451ea7 100644
      PrebuiltDeskClockGoogle \
 -    PrebuiltGmail \
 -    SoundAmplifierPrebuilt \
--    SoundPickerPrebuilt \
+     SoundPickerPrebuilt \
      TrichromeLibrary-Stub \
      WebViewGoogle-Stub \
 -    YouTube \

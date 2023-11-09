@@ -1,0 +1,58 @@
+From 9928b0c477e5206e329683ed5470b51169e2fc41 Mon Sep 17 00:00:00 2001
+From: Huy Hoang <boydaihungst@gmail.com>
+Date: Wed, 8 Nov 2023 23:54:44 +0700
+Subject: [PATCH] update: nubia 6 series rw-system
+
+---
+ derpfest.mk  | 24 ++++++++++++++++++++++++
+ rw-system.sh |  3 +++
+ 2 files changed, 27 insertions(+)
+ create mode 100644 derpfest.mk
+
+diff --git a/derpfest.mk b/derpfest.mk
+new file mode 100644
+index 0000000..ec49d42
+--- /dev/null
++++ b/derpfest.mk
+@@ -0,0 +1,24 @@
++$(call inherit-product, vendor/derp/config/common_full_phone.mk)
++$(call inherit-product, vendor/derp/config/BoardConfigDerpFest.mk)
++$(call inherit-product, device/derp/sepolicy/common/sepolicy.mk)
++-include vendor/derp/build/core/config.mk
++
++TARGET_HAS_FUSEBLK_SEPOLICY_ON_VENDOR := true
++TARGET_USES_PREBUILT_VENDOR_SEPOLICY := true
++SELINUX_IGNORE_NEVERALLOWS := true
++
++USE_LEGACY_BOOTANIMATION := false
++
++BOARD_EXT4_SHARE_DUP_BLOCKS := true
++
++TARGET_BOOT_ANIMATION_RES := 1080
++# Currently haven't been supported yet
++EXTRA_UDFPS_ANIMATIONS := true
++TARGET_FACE_UNLOCK_SUPPORTED := true
++BUILD_BROKEN_DUP_RULES := true
++TARGET_NO_KERNEL_OVERRIDE := true
++
++TARGET_NO_KERNEL_IMAGE := true
++
++PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
++    ro.system.ota.json_url=https://raw.githubusercontent.com/boydaihungst/treble_build_derpfest/A14/ota.json
+diff --git a/rw-system.sh b/rw-system.sh
+index e42d0bd..c3066ef 100644
+--- a/rw-system.sh
++++ b/rw-system.sh
+@@ -740,6 +740,9 @@ if getprop ro.vendor.build.fingerprint | grep -q -e nubia/NX669; then
+     sku="$(getprop ro.boot.product.vendor.sku)"
+     mount /vendor/etc/audio/sku_${sku}_qssi/audio_policy_configuration.xml /vendor/etc/audio/sku_$sku/audio_policy_configuration.xml
+     chmod 0666 /sys/kernel/lcd_enhance/hbm_state
++    chmod 0666 /sys/kernel/lcd_enhance/hbm_feedback
++    chmod 0666 /sys/kernel/lcd_enhance/hbm_mode
++    chmod 0666 /sys/kernel/lcd_enhance/dfps
+     # Disable back panel touch (which would hide keyboard if accidentally touched)
+     setprop persist.sys.phh.evgrab nubia_sar0_channel0
+ fi
+-- 
+2.42.1
+
