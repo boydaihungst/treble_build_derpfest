@@ -1,44 +1,43 @@
-From f493a67ab15efc86fb323570d1c4df4cf0426da7 Mon Sep 17 00:00:00 2001
+From 7cc21463304e00bb4ea87400d4d8d2a2de790996 Mon Sep 17 00:00:00 2001
 From: Huy Hoang <boydaihungst@gmail.com>
-Date: Mon, 6 Nov 2023 00:31:15 +0700
-Subject: [PATCH] fix nubia hbm
+Date: Fri, 10 Nov 2023 07:53:07 +0700
+Subject: [PATCH] Vanilla
 
 ---
- core/res/res/values/config.xml                | 27 +++++
- core/res/res/values/symbols.xml               |  4 +
- .../systemui/biometrics/UdfpsController.java  | 99 +++++++++++++++++--
- .../biometrics/UdfpsControllerOverlay.kt      |  6 ++
- .../android/systemui/biometrics/UdfpsView.kt  |  8 +-
- 5 files changed, 133 insertions(+), 11 deletions(-)
+ core/res/res/values/config.xml                |  26 +++++
+ core/res/res/values/symbols.xml               |   5 +
+ .../systemui/biometrics/UdfpsController.java  | 108 ++++++++++++++++--
+ .../biometrics/UdfpsControllerOverlay.kt      |   6 +
+ .../android/systemui/biometrics/UdfpsView.kt  |   2 -
+ 5 files changed, 136 insertions(+), 11 deletions(-)
 
 diff --git a/core/res/res/values/config.xml b/core/res/res/values/config.xml
-index 691721a9af47..5b9e50d58cf4 100644
+index b4a72812aa41..3d3dcb6329b0 100644
 --- a/core/res/res/values/config.xml
 +++ b/core/res/res/values/config.xml
-@@ -6461,4 +6461,31 @@
-     <!-- Whether the AOSP support for app cloning building blocks is to be enabled for the
-          device. -->
-     <bool name="config_enableAppCloningBuildingBlocks">true</bool>
-+
+@@ -6443,4 +6443,30 @@
+ 
+     <!-- Whether unlocking and waking a device are sequenced -->
+     <bool name="config_orderUnlockAndWake">false</bool>
 +
 +    <!-- Flag to enable framework dimming for udfps -->
 +    <bool name="config_udfpsFrameworkDimming">false</bool>
 +
 +    <!-- Array of brightness-alpha lut for framework dimming -->
 +    <string-array name="config_udfpsDimmingBrightnessAlphaArray" translatable="false">
-+          <!-- Example:
-+        <item>(brightness from 0 to 255) - (brightness from min - max) - (alpha value) </item> 
-+        <item>246-3936-45</item>
-+        <item>247-3952-44</item>
-+        <item>248-3968-44</item>
-+        <item>249-3984-43</item>
-+        <item>250-4000-42</item>
-+        <item>251-4016-42</item>
-+        <item>252-4032-41</item>
-+        <item>253-4048-40</item>
-+        <item>254-4064-39</item>
-+        <item>255-4080-38</item>
-+          -->
++    <!-- Example:
++      <item>(brightness from 0 to 255) - (brightness from min - max) - (alpha value) </item> 
++      <item>246-3936-45</item>
++      <item>247-3952-44</item>
++      <item>248-3968-44</item>
++      <item>249-3984-43</item>
++      <item>250-4000-42</item>
++      <item>251-4016-42</item>
++      <item>252-4032-41</item>
++      <item>253-4048-40</item>
++      <item>254-4064-39</item>
++      <item>255-4080-38</item>
++    -->
 +    </string-array>
 +
 +    <!-- The amount of delay to add when disabling the dimming.
@@ -48,20 +47,21 @@ index 691721a9af47..5b9e50d58cf4 100644
 +     <integer name="config_udfpsDimmingEnableDelay">0</integer>
  </resources>
 diff --git a/core/res/res/values/symbols.xml b/core/res/res/values/symbols.xml
-index c79bae649c6a..5b3e732736bc 100644
+index a61d0d446a06..5b2eaad9703b 100644
 --- a/core/res/res/values/symbols.xml
 +++ b/core/res/res/values/symbols.xml
-@@ -5134,4 +5134,8 @@
+@@ -5135,4 +5135,9 @@
  
-   <java-symbol type="drawable" name="focus_event_pressed_key_background" />
-   <java-symbol type="string" name="lockscreen_too_many_failed_attempts_countdown" />
+   <!-- Whether we order unlocking and waking -->
+   <java-symbol type="bool" name="config_orderUnlockAndWake" />
++
 +  <java-symbol type="array"   name="config_udfpsDimmingBrightnessAlphaArray" />
 +  <java-symbol type="bool"   name="config_udfpsFrameworkDimming" />
 +  <java-symbol type="integer"   name="config_udfpsDimmingDisableDelay" />
 +  <java-symbol type="integer"   name="config_udfpsDimmingEnableDelay" />
  </resources>
 diff --git a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java
-index 3dcb69e4e5d7..ee8bf6e2f85e 100644
+index 13c621f456bb..acafe65e15e8 100644
 --- a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java
 +++ b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java
 @@ -52,6 +52,7 @@ import android.os.Trace;
@@ -72,17 +72,18 @@ index 3dcb69e4e5d7..ee8bf6e2f85e 100644
  import android.util.Log;
  import android.view.LayoutInflater;
  import android.view.MotionEvent;
-@@ -219,6 +220,9 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+@@ -219,6 +220,10 @@ public class UdfpsController implements DozeReceiver, Dumpable {
      private boolean mAttemptedToDismissKeyguard;
      private final Set<Callback> mCallbacks = new HashSet<>();
      private final int mUdfpsVendorCode;
 +    private boolean mFrameworkDimming;
 +    private int[][] mBrightnessAlphaArray;
 +    private String nubiaHbmState = "/sys/kernel/lcd_enhance/hbm_state";
++    private Integer brightnessBeforeDim = 0;
  
      @VisibleForTesting
      public static final VibrationAttributes UDFPS_VIBRATION_ATTRIBUTES =
-@@ -1009,7 +1013,8 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+@@ -1009,7 +1014,8 @@ public class UdfpsController implements DozeReceiver, Dumpable {
  
      private void showUdfpsOverlay(@NonNull UdfpsControllerOverlay overlay) {
          mExecution.assertIsMainThread();
@@ -92,7 +93,7 @@ index 3dcb69e4e5d7..ee8bf6e2f85e 100644
          mOverlay = overlay;
          final int requestReason = overlay.getRequestReason();
          if (requestReason == REASON_AUTH_KEYGUARD
-@@ -1149,6 +1154,51 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+@@ -1149,6 +1155,48 @@ public class UdfpsController implements DozeReceiver, Dumpable {
          }
      }
  
@@ -103,14 +104,11 @@ index 3dcb69e4e5d7..ee8bf6e2f85e 100644
 +    }
 +
 +    private void updateViewDimAmount(boolean pressed) {
-+            Log.w("PHH-Enroll", "-----------updateViewDimAmount-----------");
-+            Log.w("PHH-Enroll", "mFrameworkDimming=" + mFrameworkDimming);
 +        if (mFrameworkDimming) {
 +            if (pressed) {
 +                int curBrightness = getBrightness();
++                brightnessBeforeDim = curBrightness;
 +                int maxBrightness = 255;
-+                // double brightnessPerPercent = maxBrightness / 100.0f;
-+                // double dimAmount = ((maxBrightness - curBrightness) / brightnessPerPercent);
 +
 +                if (curBrightness > 255) {
 +                    curBrightness = 255;
@@ -144,7 +142,7 @@ index 3dcb69e4e5d7..ee8bf6e2f85e 100644
      private boolean isOptical() {
          return mSensorProps.sensorType == FingerprintSensorProperties.TYPE_UDFPS_OPTICAL;
      }
-@@ -1157,6 +1207,18 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+@@ -1157,6 +1205,17 @@ public class UdfpsController implements DozeReceiver, Dumpable {
          return mOnFingerDown;
      }
  
@@ -159,49 +157,59 @@ index 3dcb69e4e5d7..ee8bf6e2f85e 100644
 +         }
 +    }
 +
-+
      private void dispatchOnUiReady(long requestId) {
          if (mAlternateTouchProvider != null) {
              mBiometricExecutor.execute(() -> {
-@@ -1252,17 +1314,21 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+@@ -1252,18 +1311,27 @@ public class UdfpsController implements DozeReceiver, Dumpable {
              } else {
                  view.configureDisplay(() -> dispatchOnUiReady(requestId));
              }
 +            if(SystemProperties.get("ro.vendor.build.fingerprint").contains("nubia/NX669")) {
-+              processCmd(13, 0, 0, new byte[0], 0);
-+              updateViewDimAmount(true);
-+              final int delay = mContext.getResources().getInteger(
-+                com.android.internal.R.integer.config_udfpsDimmingEnableDelay);
-+              mFgExecutor.executeDelayed(() -> {
++                processCmd(13, 0, 0, new byte[0], 0);
++            }
++            // Only run if supported framework dimming
++            if(mFrameworkDimming) {
++                final int delay = mContext.getResources().getInteger(
++                 com.android.internal.R.integer.config_udfpsDimmingEnableDelay);
++                // Delay for dimming rendering
++                   updateViewDimAmount(true);
++                mFgExecutor.executeDelayed(() -> {
++                // enable HBM
++                if(SystemProperties.get("ro.vendor.build.fingerprint").contains("nubia/NX669")) {
 +                  writeToFile(nubiaHbmState, "4095");
-+                  processCmd(14, 0, 0, new byte[0], 0);
-+              }, delay);
++                   processCmd(14, 0, 0, new byte[0], 0);
++                }
++                }, delay);
 +            }
          }
- 
 -        if(SystemProperties.get("ro.vendor.build.fingerprint").contains("nubia/NX669")) {
 -          processCmd(13, 0, 0, new byte[0], 0);
 -        }
+-
          for (Callback cb : mCallbacks) {
              cb.onFingerDown();
          }
 -        if(SystemProperties.get("ro.vendor.build.fingerprint").contains("nubia/NX669")) {
 -          processCmd(14, 0, 0, new byte[0], 0);
 -        }
+-
      }
  
      private void onFingerUp(long requestId, @NonNull UdfpsView view) {
-@@ -1323,6 +1389,25 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+@@ -1325,6 +1393,28 @@ public class UdfpsController implements DozeReceiver, Dumpable {
          mOnFingerDown = false;
          if (isOptical()) {
              unconfigureDisplay(view);
-+            if(SystemProperties.get("ro.vendor.build.fingerprint").contains("nubia/NX669")) {
++            if(mFrameworkDimming) {
 +                // Add a delay to ensure that the dim amount is updated after the display
 +                // has had chance to switch out of HBM mode.
 +                // The delay, in ms is stored in config_udfpsDimmingDisableDelay.
 +                // If the delay is 0, the dim amount will be updated immediately.
 +                final int delay = mContext.getResources().getInteger(
 +                        com.android.internal.R.integer.config_udfpsDimmingDisableDelay);
++                if(SystemProperties.get("ro.vendor.build.fingerprint").contains("nubia/NX669")) {
++                    writeToFile(nubiaHbmState, Integer.toString((brightnessBeforeDim * 16)));
++                }
 +                if (delay > 0) {
 +                    mFgExecutor.executeDelayed(() -> {
 +                        // A race condition exists where the overlay is destroyed before the the dim amount is updated.
@@ -235,38 +243,25 @@ index 826804492bc7..ece3a90be0b8 100644
       * This function computes the angle of touch relative to the sensor and maps
       * the angle to a list of help messages which are announced if accessibility is enabled.
 diff --git a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.kt b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.kt
-index 1121ed0c28a3..4ebfb45cf90d 100644
+index 841c66597c04..da2044967fd3 100644
 --- a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.kt
 +++ b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsView.kt
-@@ -239,6 +239,7 @@ class UdfpsView(
-     // This file contain current hbm value
-     val nubiaHbmState = "/sys/kernel/lcd_enhance/hbm_state"
-     var hasNubiaHbm = File(nubiaHbmState).exists()
-+    var brightnessBefore: Double = 0.0
+@@ -320,7 +320,6 @@ class UdfpsView(
+         }
+           if(hasNubiaHbm) {
+             Log.d("PHH-Enroll", "Nubia scenario in UdfpsView reached!")
+-            File(nubiaHbmState).writeText("4095")
+           }
  
-     fun configureDisplay(onDisplayConfigured: Runnable) {
-         isDisplayConfigured = true
-@@ -318,10 +319,9 @@ class UdfpsView(
-             }, 200)
-         }
-         if(hasNubiaHbm) {
--          Log.d("PHH-Enroll", "Nubia scenario in UdfpsView reached!")
--          File(nubiaHbmState).writeText("4095")
-+            brightnessBefore = brightness
-+            // dimUpdate(dim.toFloat())
-         }
--
      }
- 
-     fun unconfigureDisplay() {
-@@ -368,7 +368,7 @@ class UdfpsView(
+@@ -369,7 +368,6 @@ class UdfpsView(
              ITouchFeature.getService().setTouchMode(0, 10, 0);
          } else if(hasNubiaHbm) {
              Log.d("PHH-Enroll", "Nubia Restore brightness")
 -            File(nubiaHbmState).writeText(File("/sys/class/backlight/panel0-backlight/brightness").readText())
-+            File(nubiaHbmState).writeText(brightnessBefore.toString())
          } else {
              dimUpdate(0.0f)
          }
 -- 
 2.42.1
+

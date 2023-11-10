@@ -2,10 +2,10 @@
 
 echo
 echo "--------------------------------------"
-echo "          Derpfest X 14.0             "
+echo "         Derpfest Android 14          "
 echo "                  by                  "
 echo "              boydaihungst            "
-echo "         Origin author: ponces        "
+echo "   Many thanks ponces for bot script  "
 echo "--------------------------------------"
 echo
 
@@ -17,29 +17,26 @@ GIT_OWNER="boydaihungst"
 BL="$PWD/$GIT_REPO"
 OUT="out/target/product/tdgsi_arm64_ab"
 BD="$PWD/GSIs"
-# Linux user password
 buildDate="$(date +%Y%m%d)"
 version="$(date +v%Y.%m.%d)"
+# Linux user password
 PW=$1
 START=$(date +%s)
 timestamp="$START"
 
 initRepos() {
-
-	if [ ! -d .repo ]; then
 		echo "--> Initializing workspace"
-		repo init -u https://github.com/DerpFest-AOSP/derpfest_manifest -b 14
+		repo init -u https://github.com/DerpFest-AOSP/manifest -b 14
 		echo
-
 		echo "--> Preparing local manifest"
 		mkdir -p .repo/local_manifests
 		cp $BL/manifest.xml .repo/local_manifests/
 		echo
-	fi
 }
 
 syncRepos() {
 	echo "--> Syncing repos"
+	bash $BL/revert-patches.sh .
 	repo sync -c --force-sync --no-clone-bundle --no-tags -j$(nproc --all)
 	echo
 }
@@ -65,50 +62,71 @@ setupEnv() {
 }
 
 buildGappsVariant() {
-	echo "--> Building treble_arm64_bvN"
+	echo "--> Building treble_arm64_bgN"
 	make -j$(nproc --all) installclean
-	lunch treble_arm64_bvN-userdebug
+	lunch treble_arm64_bgN-userdebug
 	make -j$(nproc --all) systemimage
-	mv $OUT/system.img $BD/system-treble_arm64_bvN.img
+	mv $OUT/system.img $BD/system-treble_arm64_bgN.img
 	echo
 }
 
 buildMiniVariant() {
-	echo "--> Building treble_arm64_bvN-mini"
+	echo "--> Building treble_arm64_bgN-mini"
 	(cd vendor/gms && git am $BL/patches/mini/platform_vendor_gms/mini-gms.patch)
 	make -j$(nproc --all) installclean
-	lunch treble_arm64_bvN-userdebug
+	lunch treble_arm64_bgN-userdebug
 	make -j$(nproc --all) systemimage
 	(cd vendor/gms && git reset --hard HEAD~1)
-	mv $OUT/system.img $BD/system-treble_arm64_bvN-mini.img
+	mv $OUT/system.img $BD/system-treble_arm64_bgN-mini.img
+	echo
+}
+
+buildVanillaVariant() {
+	# echo "--> Building treble_arm64_bvN"
+	# (cd vendor/derp && git am $BL/patches/vanilla/platform_vendor_derp/vanilla-no-gms.patch)
+	# make -j$(nproc --all) installclean
+	# lunch treble_arm64_bvN-userdebug
+	# make -j$(nproc --all) systemimage
+	# (cd vendor/derp && git reset --hard HEAD~1)
+	# mv $OUT/system.img $BD/system-treble_arm64_bvN.img
 	echo
 }
 
 buildVndkliteVariant() {
-	echo "--> Building treble_arm64_bvN-vndklite"
+	echo "--> Building treble_arm64_bgN-vndklite"
 	if [[ -z "${PW}" ]]; then
 		echo "!!! No user password, No vndklite build"
 		return
 	fi
 	pushd sas-creator/ &>/dev/null
-	echo $PW | sudo -S bash lite-adapter.sh 64 $BD/system-treble_arm64_bvN.img
-	cp s.img $BD/system-treble_arm64_bvN-vndklite.img
+	echo $PW | sudo -S bash lite-adapter.sh 64 $BD/system-treble_arm64_bgN.img
+	cp s.img $BD/system-treble_arm64_bgN-vndklite.img
 	echo $PW | sudo -S rm -rf s.img d tmp
+
 	# mini
-	echo $PW | sudo -S bash lite-adapter.sh 64 $BD/system-treble_arm64_bvN-mini.img
-	cp s.img $BD/system-treble_arm64_bvN-mini-vndklite.img
+	echo $PW | sudo -S bash lite-adapter.sh 64 $BD/system-treble_arm64_bgN-mini.img
+	cp s.img $BD/system-treble_arm64_bgN-mini-vndklite.img
 	echo $PW | sudo -S rm -rf s.img d tmp
 	popd &>/dev/null
+
+	# vanilla
+	# echo $PW | sudo -S bash lite-adapter.sh 64 $BD/system-treble_arm64_bvN.img
+	# cp s.img $BD/system-treble_arm64_bvN-vndklite.img
+	# echo $PW | sudo -S rm -rf s.img d tmp
+	# popd &>/dev/null
+
 	echo
 }
 
 generatePackages() {
 	echo "--> Generating packages"
-	xz -cv $BD/system-treble_arm64_bvN.img -T0 >"$BD/derpfest_arm64-ab-unofficial-$buildDate.img.xz"
-	xz -cv $BD/system-treble_arm64_bvN-mini.img -T0 >"$BD/derpfest_arm64-ab-mini-unofficial-$buildDate.img.xz"
+	xz -cv $BD/system-treble_arm64_bgN.img -T0 >"$BD/derpfest_arm64-ab-unofficial-$buildDate.img.xz"
+	xz -cv $BD/system-treble_arm64_bgN-mini.img -T0 >"$BD/derpfest_arm64-ab-mini-unofficial-$buildDate.img.xz"
+	# xz -cv $BD/system-treble_arm64_bvN.img -T0 >"$BD/derpfest_arm64-ab-vanilla-unofficial-$buildDate.img.xz"
 	if [[ -n "${PW}" ]]; then
-    xz -cv $BD/system-treble_arm64_bvN-vndklite.img -T0 >"$BD/derpfest_arm64-ab-vndklite-unofficial-$buildDate.img.xz"
-    xz -cv $BD/system-treble_arm64_bvN-mini-vndklite.img -T0 >"$BD/derpfest_arm64-ab-mini-vndklite-unofficial-$buildDate.img.xz"
+    xz -cv $BD/system-treble_arm64_bgN-vndklite.img -T0 >"$BD/derpfest_arm64-ab-vndklite-unofficial-$buildDate.img.xz"
+    xz -cv $BD/system-treble_arm64_bgN-mini-vndklite.img -T0 >"$BD/derpfest_arm64-ab-mini-vndklite-unofficial-$buildDate.img.xz"
+    # xz -cv $BD/system-treble_arm64_bvN-vndklite.img -T0 >"$BD/derpfest_arm64-ab-vanilla-vndklite-unofficial-$buildDate.img.xz"
 	fi
 	echo
 }
@@ -120,11 +138,13 @@ generateOta() {
 		while read file; do
 			filename="$(basename $file)"
 			if [[ $filename == *"vndklite"* ]]; then
-				name="treble_arm64_bvN-vndklite"
+				name="treble_arm64_bgN-vndklite"
 			elif [[ $filename == *"mini"* ]]; then
-				name="treble_arm64_bvN-mini"
-			else
+				name="treble_arm64_bgN-mini"
+			elif [[ $filename == *"vanilla"* ]]; then
 				name="treble_arm64_bvN"
+			else
+				name="treble_arm64_bgN"
 			fi
 			size=$(wc -c $file | awk '{print $1}')
 			url="https://github.com/$GIT_OWNER/$GIT_REPO/releases/download/$version/$filename"
@@ -175,6 +195,7 @@ syncRepos
 applyPatches
 setupEnv
 buildGappsVariant
+buildVanillaVariant
 buildMiniVariant
 buildVndkliteVariant
 generatePackages

@@ -1,15 +1,15 @@
-From 95fa02d91ee78ffc41c19571c934a0629fe1e8ee Mon Sep 17 00:00:00 2001
+From f7e611c55ada8bd59c49fd843806a5b0912a29f2 Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Sun, 25 Oct 2020 23:57:26 +0100
-Subject: [PATCH 15/49] Re-implement fnmatch-like behaviour for RRO java-side
+Subject: [PATCH 15/44] Re-implement fnmatch-like behaviour for RRO java-side
 
 T: Also apply to FrameworkParsingPackageUtils (@PeterCxy)
 
 Change-Id: Id38292a9a1453aa87b8401c1fdb390fa4e63c7d1
 ---
  .../android/content/pm/PackageParser.java     | 13 +++++++++--
- .../parsing/FrameworkParsingPackageUtils.java | 23 ++++++++++---------
- 2 files changed, 23 insertions(+), 13 deletions(-)
+ .../parsing/FrameworkParsingPackageUtils.java | 22 +++++++++----------
+ 2 files changed, 22 insertions(+), 13 deletions(-)
 
 diff --git a/core/java/android/content/pm/PackageParser.java b/core/java/android/content/pm/PackageParser.java
 index 223953a1c71c..d37ad6f90432 100644
@@ -36,14 +36,12 @@ index 223953a1c71c..d37ad6f90432 100644
          }
          return true;
 diff --git a/core/java/android/content/pm/parsing/FrameworkParsingPackageUtils.java b/core/java/android/content/pm/parsing/FrameworkParsingPackageUtils.java
-index b75ba82ad091..4f66add2abba 100644
+index b75ba82ad091..fb6f1922bc70 100644
 --- a/core/java/android/content/pm/parsing/FrameworkParsingPackageUtils.java
 +++ b/core/java/android/content/pm/parsing/FrameworkParsingPackageUtils.java
-@@ -213,18 +213,19 @@ public class FrameworkParsingPackageUtils {
-             return false;
+@@ -214,17 +214,17 @@ public class FrameworkParsingPackageUtils {
          }
          for (int i = 0; i < propNames.length; i++) {
-+            // Check property value: make sure it is both set and equal to expected value
              final String currValue = SystemProperties.get(propNames[i]);
 -            // 1. Make sure prop is set.
 -            if (currValue == null) {

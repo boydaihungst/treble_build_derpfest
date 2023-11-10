@@ -282,8 +282,8 @@ index 7c15f67..30f20e5 100644
 +  amount of delay to add when disabling the dimming.
 +         This is used to prevent flickers due to the dimming being disabled
 +         before the screen has had chance to switch out of HBM mode -->
-+  <integer name="config_udfpsDimmingDisableDelay">1</integer>
-+  <integer name="config_udfpsDimmingEnableDelay">5</integer>
++  <integer name="config_udfpsDimmingDisableDelay">2</integer>
++  <integer name="config_udfpsDimmingEnableDelay">2</integer>
 +
  </resources>
 -- 

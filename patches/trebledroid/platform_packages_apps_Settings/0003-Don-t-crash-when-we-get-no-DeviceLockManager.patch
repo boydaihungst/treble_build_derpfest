@@ -1,4 +1,4 @@
-From ecbee27486f6bd05041e1dc79e35010bf5db7c28 Mon Sep 17 00:00:00 2001
+From 4c2aa214c094ae085b866cf28eafcbcb82ce446a Mon Sep 17 00:00:00 2001
 From: Alberto Ponces <ponces26@gmail.com>
 Date: Sun, 29 Oct 2023 18:34:01 +0000
 Subject: [PATCH 3/3] Don't crash when we get no DeviceLockManager
@@ -36,4 +36,5 @@ index 4b6fe88f66..0f65b1f725 100644
      }
  }
 -- 
-2.34.1
+2.25.1
+
