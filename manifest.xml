@@ -13,4 +13,11 @@
   <project name="ponces/treble_adapter" path="sas-creator" remote="github" revision="master" />
   <project name="phhusson/vendor_magisk" path="vendor/magisk" remote="github"
     revision="android-10.0" />
+  <remove-project name="frameworks_opt_telephony" />
+  <remove-project name="packages_services_Telephony" />
+  <remove-project name="packages_services_Telecomm" />
+  <!-- Telephony fix-->
+  <project path="frameworks/opt/telephony" name="platform/frameworks/opt/telephony" groups="pdk" />
+  <project path="packages/services/Telecomm" name="platform/packages/services/Telecomm" groups="pdk-cw-fs,pdk-fs" />
+  <project path="packages/services/Telephony" name="platform/packages/services/Telephony" groups="pdk-cw-fs,pdk-fs" />
 </manifest>

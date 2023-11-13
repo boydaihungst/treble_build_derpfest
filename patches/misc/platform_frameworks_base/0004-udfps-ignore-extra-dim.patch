@@ -1,0 +1,86 @@
+From 6d2315896eaa465e6a5cb2a6c4cd86300c87a52c Mon Sep 17 00:00:00 2001
+From: Huy Hoang <boydaihungst@gmail.com>
+Date: Mon, 13 Nov 2023 10:29:04 +0700
+Subject: [PATCH] udfps: ignore extra dim
+
+---
+ .../systemui/biometrics/UdfpsController.java   | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java
+index 75aa17502f4a..5f1e13b92c61 100644
+--- a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java
++++ b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java
+@@ -43,6 +43,7 @@ import android.hardware.fingerprint.FingerprintSensorProperties;
+ import android.hardware.fingerprint.FingerprintSensorPropertiesInternal;
+ import android.hardware.fingerprint.IUdfpsOverlayController;
+ import android.hardware.fingerprint.IUdfpsOverlayControllerCallback;
++import android.hardware.display.ColorDisplayManager;
+ import android.hardware.input.InputManager;
+ import android.os.Build;
+ import android.os.Handler;
+@@ -181,7 +182,9 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+     @NonNull private final SecureSettings mSecureSettings;
+     @NonNull private final UdfpsUtils mUdfpsUtils;
+     @NonNull private final InputManager mInputManager;
++    @NonNull private final ColorDisplayManager mColorDisplayManager;
+     private final boolean mIgnoreRefreshRate;
++    private boolean mIgnoreExtraDim;
+ 
+     // Currently the UdfpsController supports a single UDFPS sensor. If devices have multiple
+     // sensors, this, in addition to a lot of the code here, will be updated.
+@@ -899,7 +902,8 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+             @NonNull SecureSettings secureSettings,
+             @NonNull InputManager inputManager,
+             @NonNull UdfpsUtils udfpsUtils,
+-            @NonNull KeyguardFaceAuthInteractor keyguardFaceAuthInteractor) {
++            @NonNull KeyguardFaceAuthInteractor keyguardFaceAuthInteractor,
++            @NonNull ColorDisplayManager colorDisplayManager) {
+         mContext = context;
+         mExecution = execution;
+         mVibrator = vibrator;
+@@ -945,7 +949,7 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+         mSecureSettings = secureSettings;
+         mUdfpsUtils = udfpsUtils;
+         mInputManager = inputManager;
+-
++        mColorDisplayManager = colorDisplayManager;
+         mTouchProcessor = mFeatureFlags.isEnabled(Flags.UDFPS_NEW_TOUCH_DETECTION)
+                 ? singlePointerTouchProcessor : null;
+         mSessionTracker = sessionTracker;
+@@ -1014,8 +1018,10 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+ 
+     private void showUdfpsOverlay(@NonNull UdfpsControllerOverlay overlay) {
+         mExecution.assertIsMainThread();
++        mIgnoreExtraDim = mColorDisplayManager.isReduceBrightColorsActivated();
+         mFrameworkDimming = mContext.getResources().getBoolean(com.android.internal.R.bool.config_udfpsFrameworkDimming);
+         parseBrightnessAlphaArray();
++        Log.d(TAG, "Extra dim status mIgnoreExtraDim (showUdfpsOverlay): " + mIgnoreExtraDim);
+         mOverlay = overlay;
+         final int requestReason = overlay.getRequestReason();
+         if (requestReason == REASON_AUTH_KEYGUARD
+@@ -1269,6 +1275,10 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+                     + " current: " + mOverlay.getRequestId());
+             return;
+         }
++        if (mIgnoreExtraDim) {
++            Log.d(TAG, "Extra dim disable");
++            mColorDisplayManager.setReduceBrightColorsActivated(false);
++        }
+         if (isOptical()) {
+             mLatencyTracker.onActionStart(LatencyTracker.ACTION_UDFPS_ILLUMINATE);
+         }
+@@ -1365,6 +1375,10 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+         mActivePointerId = -1;
+         mAcquiredReceived = false;
+         if (mOnFingerDown) {
++            if (mIgnoreExtraDim) {
++                Log.d(TAG, "Extra dim enable");
++                mColorDisplayManager.setReduceBrightColorsActivated(true);
++            }
+             if (mAlternateTouchProvider != null) {
+                 mBiometricExecutor.execute(() -> {
+                     mAlternateTouchProvider.onPointerUp(requestId);
+-- 
+2.42.1
+

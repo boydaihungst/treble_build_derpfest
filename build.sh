@@ -36,7 +36,6 @@ initRepos() {
 
 syncRepos() {
 	echo "--> Syncing repos"
-	bash $BL/revert-patches.sh .
 	repo sync -c --force-sync --no-clone-bundle --no-tags -j$(nproc --all)
 	echo
 }

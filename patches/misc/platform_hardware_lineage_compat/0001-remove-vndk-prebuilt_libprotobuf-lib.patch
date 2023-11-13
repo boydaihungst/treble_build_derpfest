@@ -1,0 +1,57 @@
+From cba84f54f6a0ca7223781c8d06bbd374d8fb5fb4 Mon Sep 17 00:00:00 2001
+From: Huy Hoang <boydaihungst@gmail.com>
+Date: Sun, 12 Nov 2023 15:47:54 +0700
+Subject: [PATCH] remove vndk prebuilt_libprotobuf lib
+
+---
+ Android.bp | 37 -------------------------------------
+ 1 file changed, 37 deletions(-)
+
+diff --git a/Android.bp b/Android.bp
+index 7765306..ac45171 100644
+--- a/Android.bp
++++ b/Android.bp
+@@ -423,40 +423,3 @@ cc_library_shared {
+     vendor: true,
+ }
+ 
+-cc_prebuilt_library_shared {
+-    name: "libprotobuf-cpp-full-vendorcompat",
+-    stem: "libprotobuf-cpp-full",
+-    vendor: true,
+-    strip: {
+-        none: true,
+-    },
+-    target: {
+-        android_arm: {
+-            srcs: ["vndk/v29/arm/libprotobuf-cpp-full.so"],
+-        },
+-        android_arm64: {
+-            srcs: ["vndk/v29/arm64/libprotobuf-cpp-full.so"],
+-        },
+-    },
+-    compile_multilib: "both",
+-    check_elf_files: false,
+-}
+-
+-cc_prebuilt_library_shared {
+-    name: "libprotobuf-cpp-lite-vendorcompat",
+-    stem: "libprotobuf-cpp-lite",
+-    vendor: true,
+-    strip: {
+-        none: true,
+-    },
+-    target: {
+-        android_arm: {
+-            srcs: ["vndk/v29/arm/libprotobuf-cpp-lite.so"],
+-        },
+-        android_arm64: {
+-            srcs: ["vndk/v29/arm64/libprotobuf-cpp-lite.so"],
+-        },
+-    },
+-    compile_multilib: "both",
+-    check_elf_files: false,
+-}
+-- 
+2.42.1
+
