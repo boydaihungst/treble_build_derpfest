@@ -1,0 +1,201 @@
+From a3a4549fd98089e379c1a87a48af4eb03eb4a1f8 Mon Sep 17 00:00:00 2001
+From: rituj <ritujbeniwal@gmail.com>
+Date: Mon, 3 Feb 2020 09:25:09 +0530
+Subject: [PATCH 4/5] Telecomm: Add custom vibration patterns [3/3] [SQUASH]
+
+Should work for all devices
+
+Squashed with:
+
+  Telecomm: Update vibration patterns
+
+    Change-Id: I050064f8e37e2091e47c5511b4f155ce32199def
+
+Change-Id: I7d0f8147b0bb3603ced2c93b356341cbd176112e
+---
+ res/values/config.xml                      |   2 +-
+ src/com/android/server/telecom/Ringer.java | 131 ++++++++++++++++++---
+ 2 files changed, 118 insertions(+), 15 deletions(-)
+
+diff --git a/res/values/config.xml b/res/values/config.xml
+index 15f765bae..e5b918c07 100644
+--- a/res/values/config.xml
++++ b/res/values/config.xml
+@@ -51,7 +51,7 @@
+     <!-- When true, a simple full intensity on/off vibration pattern will be used when calls ring.
+          When false, a fancy vibration pattern which ramps up and down will be used.
+          Devices should overlay this value based on the type of vibration hardware they employ. -->
+-    <bool name="use_simple_vibration_pattern">false</bool>
++    <bool name="use_simple_vibration_pattern">true</bool>
+ 
+     <!-- Threshold for the X+Y component of gravity needed for the device orientation to be
+          classified as being on a user's ear. -->
+diff --git a/src/com/android/server/telecom/Ringer.java b/src/com/android/server/telecom/Ringer.java
+index abd747016..b6d2498a3 100644
+--- a/src/com/android/server/telecom/Ringer.java
++++ b/src/com/android/server/telecom/Ringer.java
+@@ -27,6 +27,7 @@ import android.app.NotificationManager;
+ import android.app.Person;
+ import android.content.ContentResolver;
+ import android.content.Context;
++import android.database.ContentObserver;
+ import android.media.AudioManager;
+ import android.media.Ringtone;
+ import android.media.VolumeShaper;
+@@ -124,17 +125,74 @@ public class Ringer {
+     }
+ 
+     private static final long[] SIMPLE_VIBRATION_PATTERN = {
+-            0, // No delay before starting
+-            1000, // How long to vibrate
+-            1000, // How long to wait before vibrating again
++        0, // No delay before starting
++        1000, // How long to vibrate
++        1000, // How long to wait before vibrating again
++        1000, // How long to vibrate
++        1000, // How long to wait before vibrating again
+     };
+ 
+-    private static final int[] SIMPLE_VIBRATION_AMPLITUDE = {
+-            0, // No delay before starting
+-            255, // Vibrate full amplitude
+-            0, // No amplitude while waiting
++    private static final long[] DZZZ_DA_VIBRATION_PATTERN = {
++        0, // No delay before starting
++        500, // How long to vibrate
++        200, // Delay
++        70, // How long to vibrate
++        720, // How long to wait before vibrating again
+     };
+ 
++    private static final long[] MM_MM_MM_VIBRATION_PATTERN = {
++        0, // No delay before starting
++        300, // How long to vibrate
++        400, // Delay
++        300, // How long to vibrate
++        400, // Delay
++        300, // How long to vibrate
++        1400, // How long to wait before vibrating again
++    };
++
++    private static final long[] DA_DA_DZZZ_VIBRATION_PATTERN = {
++        0, // No delay before starting
++        70, // How long to vibrate
++        80, // Delay
++        70, // How long to vibrate
++        180, // Delay
++        600,  // How long to vibrate
++        1050, // How long to wait before vibrating again
++    };
++
++    private static final long[] DA_DZZZ_DA_VIBRATION_PATTERN = {
++        0, // No delay before starting
++        80, // How long to vibrate
++        200, // Delay
++        600, // How long to vibrate
++        150, // Delay
++        60,  // How long to vibrate
++        1050, // How long to wait before vibrating again
++    };
++
++    private static final int[] SEVEN_ELEMENTS_VIBRATION_AMPLITUDE = {
++        0, // No delay before starting
++        255, // Vibrate full amplitude
++        0, // No amplitude while waiting
++        255,
++        0,
++        255,
++        0,
++    };
++
++    private static final int[] FIVE_ELEMENTS_VIBRATION_AMPLITUDE = {
++        0, // No delay before starting
++        255, // Vibrate full amplitude
++        0, // No amplitude while waiting
++        255,
++        0,
++    };
++
++    private boolean mUseSimplePattern;
++    private int mVibrationPattern;
++    private SettingsObserver mSettingObserver;
++    private final Handler mH = new Handler();
++
+     /**
+      * Indicates that vibration should be repeated at element 5 in the {@link #PULSE_AMPLITUDE} and
+      * {@link #PULSE_PATTERN} arrays.  This means repetition will happen for the main ease-in/peak
+@@ -226,14 +284,16 @@ public class Ringer {
+         mVibrationEffectProxy = vibrationEffectProxy;
+         mNotificationManager = notificationManager;
+         mAccessibilityManagerAdapter = accessibilityManagerAdapter;
++        mUseSimplePattern = mContext.getResources().getBoolean(R.bool.use_simple_vibration_pattern);
++        mVibrationPattern = Settings.System.getIntForUser(mContext.getContentResolver(),
++            Settings.System.RINGTONE_VIBRATION_PATTERN, 0, UserHandle.USER_CURRENT);
+ 
+-        if (mContext.getResources().getBoolean(R.bool.use_simple_vibration_pattern)) {
+-            mDefaultVibrationEffect = mVibrationEffectProxy.createWaveform(SIMPLE_VIBRATION_PATTERN,
+-                    SIMPLE_VIBRATION_AMPLITUDE, REPEAT_SIMPLE_VIBRATION_AT);
+-        } else {
+-            mDefaultVibrationEffect = mVibrationEffectProxy.createWaveform(PULSE_PATTERN,
+-                    PULSE_AMPLITUDE, REPEAT_VIBRATION_AT);
+-        }
++        updateVibrationPattern();
++
++        mSettingObserver = new SettingsObserver(mH);
++        mContext.getContentResolver().registerContentObserver(
++            Settings.System.getUriFor(Settings.System.RINGTONE_VIBRATION_PATTERN),
++            true, mSettingObserver, UserHandle.USER_CURRENT);
+ 
+         mIsHapticPlaybackSupportedByDevice =
+                 mSystemSettingsUtil.isHapticPlaybackSupported(mContext);
+@@ -794,4 +854,47 @@ public class Ringer {
+             return false;
+         }
+     }
++
++    private void updateVibrationPattern() {
++        mVibrationPattern = Settings.System.getIntForUser(mContext.getContentResolver(),
++            Settings.System.RINGTONE_VIBRATION_PATTERN, 0, UserHandle.USER_CURRENT);
++        if (mUseSimplePattern) {
++            switch (mVibrationPattern) {
++                case 1:
++                    mDefaultVibrationEffect = mVibrationEffectProxy.createWaveform(DZZZ_DA_VIBRATION_PATTERN,
++                        FIVE_ELEMENTS_VIBRATION_AMPLITUDE, REPEAT_SIMPLE_VIBRATION_AT);
++                    break;
++                case 2:
++                    mDefaultVibrationEffect = mVibrationEffectProxy.createWaveform(MM_MM_MM_VIBRATION_PATTERN,
++                        SEVEN_ELEMENTS_VIBRATION_AMPLITUDE, REPEAT_SIMPLE_VIBRATION_AT);
++                    break;
++                case 3:
++                    mDefaultVibrationEffect = mVibrationEffectProxy.createWaveform(DA_DA_DZZZ_VIBRATION_PATTERN,
++                        SEVEN_ELEMENTS_VIBRATION_AMPLITUDE, REPEAT_SIMPLE_VIBRATION_AT);
++                    break;
++                case 4:
++                    mDefaultVibrationEffect = mVibrationEffectProxy.createWaveform(DA_DZZZ_DA_VIBRATION_PATTERN,
++                        SEVEN_ELEMENTS_VIBRATION_AMPLITUDE, REPEAT_SIMPLE_VIBRATION_AT);
++                    break;
++                default:
++                    mDefaultVibrationEffect = mVibrationEffectProxy.createWaveform(SIMPLE_VIBRATION_PATTERN,
++                        FIVE_ELEMENTS_VIBRATION_AMPLITUDE, REPEAT_SIMPLE_VIBRATION_AT);
++                    break;
++            }
++        } else {
++            mDefaultVibrationEffect = mVibrationEffectProxy.createWaveform(PULSE_PATTERN,
++                    PULSE_AMPLITUDE, REPEAT_VIBRATION_AT);
++        }
++    }
++
++    private final class SettingsObserver extends ContentObserver {
++        public SettingsObserver(Handler handler) {
++            super(handler);
++        }
++
++        @Override
++        public void onChange(boolean SelfChange) {
++            updateVibrationPattern();
++        }
++    }
+ }
+-- 
+2.42.1
+

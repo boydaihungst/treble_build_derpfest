@@ -1,3 +1,4 @@
+$(call inherit-product, $(SRC_TARGET_DIR)/product/window_extensions.mk)
 $(call inherit-product, vendor/derp/config/common_full_phone.mk)
 $(call inherit-product, vendor/derp/config/BoardConfigDerpFest.mk)
 $(call inherit-product, device/derp/sepolicy/common/sepolicy.mk)
@@ -20,6 +21,7 @@ TARGET_NO_KERNEL_OVERRIDE := true
 
 TARGET_NO_KERNEL_IMAGE := true
 
+DERP_BUILDTYPE := CI
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     ro.system.ota.json_url=https://raw.githubusercontent.com/boydaihungst/treble_build_derpfest/A14/ota.json
 

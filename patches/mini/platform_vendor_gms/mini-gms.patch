@@ -1,7 +1,7 @@
 From 8db79523e2049ba21161765971001e18236be614 Mon Sep 17 00:00:00 2001
 From: Huy Hoang <boydaihungst@gmail.com>
 Date: Fri, 10 Nov 2023 06:39:37 +0700
-Subject: [PATCH] remove
+Subject: [PATCH] mini gms
 
 ---
  common/common-vendor.mk | 18 ------------------

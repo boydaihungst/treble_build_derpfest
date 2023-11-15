@@ -25,13 +25,13 @@ START=$(date +%s)
 timestamp="$START"
 
 initRepos() {
-		echo "--> Initializing workspace"
-		repo init -u https://github.com/DerpFest-AOSP/manifest -b 14
-		echo
-		echo "--> Preparing local manifest"
-		mkdir -p .repo/local_manifests
-		cp $BL/manifest.xml .repo/local_manifests/
-		echo
+	echo "--> Initializing workspace"
+	repo init -u https://github.com/DerpFest-AOSP/manifest -b 14
+	echo
+	echo "--> Preparing local manifest"
+	mkdir -p .repo/local_manifests
+	cp $BL/manifest.xml .repo/local_manifests/
+	echo
 }
 
 syncRepos() {
@@ -123,9 +123,9 @@ generatePackages() {
 	xz -cv $BD/system-treble_arm64_bgN-mini.img -T0 >"$BD/derpfest_arm64-ab-mini-unofficial-$buildDate.img.xz"
 	# xz -cv $BD/system-treble_arm64_bvN.img -T0 >"$BD/derpfest_arm64-ab-vanilla-unofficial-$buildDate.img.xz"
 	if [[ -n "${PW}" ]]; then
-    xz -cv $BD/system-treble_arm64_bgN-vndklite.img -T0 >"$BD/derpfest_arm64-ab-vndklite-unofficial-$buildDate.img.xz"
-    xz -cv $BD/system-treble_arm64_bgN-mini-vndklite.img -T0 >"$BD/derpfest_arm64-ab-mini-vndklite-unofficial-$buildDate.img.xz"
-    # xz -cv $BD/system-treble_arm64_bvN-vndklite.img -T0 >"$BD/derpfest_arm64-ab-vanilla-vndklite-unofficial-$buildDate.img.xz"
+		xz -cv $BD/system-treble_arm64_bgN-vndklite.img -T0 >"$BD/derpfest_arm64-ab-vndklite-unofficial-$buildDate.img.xz"
+		xz -cv $BD/system-treble_arm64_bgN-mini-vndklite.img -T0 >"$BD/derpfest_arm64-ab-mini-vndklite-unofficial-$buildDate.img.xz"
+		# xz -cv $BD/system-treble_arm64_bvN-vndklite.img -T0 >"$BD/derpfest_arm64-ab-vanilla-vndklite-unofficial-$buildDate.img.xz"
 	fi
 	echo
 }
@@ -167,7 +167,7 @@ release() {
 			-f tag_name="$version" \
 			-f target_commitish="$GIT_BRANCH" \
 			-f name="$version" \
-			-F draft=false \
+			-F draft=true \
 			-F prerelease=false \
 			-F generate_release_notes=false
 

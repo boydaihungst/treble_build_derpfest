@@ -1,0 +1,59 @@
+From 49d266e940a4ba0fd354129666b7a18ddd441cb7 Mon Sep 17 00:00:00 2001
+From: Ido Ben-Hur <idoybh2@gmail.com>
+Date: Fri, 5 Jun 2020 22:21:29 +0300
+Subject: [PATCH 5/5] Telecomm: Allow choosing a custom vibration pattern [2/3]
+
+---
+ src/com/android/server/telecom/Ringer.java | 29 ++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+
+diff --git a/src/com/android/server/telecom/Ringer.java b/src/com/android/server/telecom/Ringer.java
+index 37988ca48..6d693f5ff 100644
+--- a/src/com/android/server/telecom/Ringer.java
++++ b/src/com/android/server/telecom/Ringer.java
+@@ -308,6 +308,9 @@ public class Ringer {
+         mContext.getContentResolver().registerContentObserver(
+             Settings.System.getUriFor(Settings.System.RINGTONE_VIBRATION_PATTERN),
+             true, mSettingObserver, UserHandle.USER_CURRENT);
++        mContext.getContentResolver().registerContentObserver(
++            Settings.System.getUriFor(Settings.System.CUSTOM_RINGTONE_VIBRATION_PATTERN),
++            true, mSettingObserver, UserHandle.USER_CURRENT);
+ 
+         mIsHapticPlaybackSupportedByDevice =
+                 mSystemSettingsUtil.isHapticPlaybackSupported(mContext);
+@@ -1175,6 +1178,32 @@ public class Ringer {
+                     mDefaultVibrationEffect = mVibrationEffectProxy.createWaveform(DA_DZZZ_DA_VIBRATION_PATTERN,
+                         SEVEN_ELEMENTS_VIBRATION_AMPLITUDE, REPEAT_SIMPLE_VIBRATION_AT);
+                     break;
++                case 5:
++                    String customVibValue = Settings.System.getStringForUser(
++                            mContext.getContentResolver(),
++                            Settings.System.CUSTOM_RINGTONE_VIBRATION_PATTERN,
++                            UserHandle.USER_CURRENT);
++                    String[] customVib = new String[3];
++                    if (customVibValue != null && !customVibValue.equals("")) {
++                        customVib = customVibValue.split(",", 3);
++                    }
++                    else { // If no value - use default
++                        customVib[0] = "0";
++                        customVib[1] = "800";
++                        customVib[2] = "800";
++                    }
++                    long[] vibPattern = {
++                        0, // No delay before starting
++                        Long.parseLong(customVib[0]), // How long to vibrate
++                        400, // Delay
++                        Long.parseLong(customVib[1]), // How long to vibrate
++                        400, // Delay
++                        Long.parseLong(customVib[2]), // How long to vibrate
++                        400, // How long to wait before vibrating again
++                    };
++                    mDefaultVibrationEffect = mVibrationEffectProxy.createWaveform(vibPattern,
++                            SEVEN_ELEMENTS_VIBRATION_AMPLITUDE, REPEAT_SIMPLE_VIBRATION_AT);
++                    break;
+                 default:
+                     mDefaultVibrationEffect = mVibrationEffectProxy.createWaveform(SIMPLE_VIBRATION_PATTERN,
+                         FIVE_ELEMENTS_VIBRATION_AMPLITUDE, REPEAT_SIMPLE_VIBRATION_AT);
+-- 
+2.42.1
+
