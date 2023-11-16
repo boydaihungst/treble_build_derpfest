@@ -157,28 +157,8 @@ generateOta() {
 
 release() {
 	if [[ $(git config user.email) == *"$GIT_OWNER@"* ]]; then
-		pushd $BD/ &>/dev/null
 		echo "--> Uploading rom"
-		gh api \
-			--method POST \
-			-H "Accept: application/vnd.github+json" \
-			-H "X-GitHub-Api-Version: 2022-11-28" \
-			/repos/$GIT_OWNER\/$GIT_REPO/releases \
-			-f tag_name="$version" \
-			-f target_commitish="$GIT_BRANCH" \
-			-f name="$version" \
-			-F draft=true \
-			-F prerelease=false \
-			-F generate_release_notes=false
-
-		find $BD/ -name "derpfest_*.img.xz" | sort | {
-			while read file; do
-				filename="$(basename $file)"
-				gh release upload $version "$file" --repo $GIT_OWNER/$GIT_REPO --clobber
-				rm -rf $file
-			done
-		}
-		popd &>/dev/null
+    gh release create --repo "$GIT_OWNER/$GIT_REPO" --notes-file "$BL/changelog.md" --title "$version" "$version" $BD/*.img.xz
 
 		echo "--> Uploading ota file"
 		pushd $BL/ &>/dev/null
