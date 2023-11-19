@@ -1,36 +1,30 @@
-# v2023.11.17
+# v2023.11.19
 
 ## Change logs
 
-- PixelPropUtils: Make play integrity pass again
-- base: Add support for strict standby policy
-- PowerUI: Mute logcat spam.
-- EnhancedEstimates: Get estimates from Device Health Services
-- Ambient Music Ticker - Allow to pulse on new tracks
-- SystemUI: add FloatingRotationButton for hw-key devices
-- SystemUI: Integrate Google Lens into Screenshot UI
-- SystemUI: Implement burn-in protection for status/navbar
+- Replaced nexus/pixel launcher with derp laucher
 
-- Settings: Introduce Adaptive Playback
-- Port "Battery Usage Alerts" feature from factory images
-- Settings: Allow toggling floating rotation button
-- Settings: Allow disabling clipboard overlay
-- Settings: Expose saved devices fragment via intent
-- Settings: Add kill button to notification guts
-- Settings: Allow Configuring Navbar Radius
-- Settings: Optional haptic feedback on back gesture
-- Settings: Allow to hide arrow for back gesture
-- Settings: Change back gesture height intervals
-- Allow changing back gesture height
+- Settings: Display auto rotate settings instead of toggle
+- display: Import screen resolution from cheetah stock
+- Settings: Import SettingsGoogle animations
+- Settings: Utilize our AppListPreference with Sensor Blocking pref
+- Settings: BlockSensors: Fix/update the way Footer info is added
+- Settings: Make sensor block package list configurable
+- Settings: Sensor block per-package switch[2/2]
+- Settings: Fix potential NPE in WifiTetherSecurityPreferenceController
 
 ## Bug Fixes
 
-- SystemUI: Fix Biometric dialog corner radius
-- Settings: Fix potential NPE in WifiTetherSecurityPreferenceController
+- FingerprintSettings: Don't crash when sensor properties is null.
+[#36](https://github.com/boydaihungst/treble_build_derpfest/issues/36)
+- Pulse: Fix orientation checks
+- Pulse: Prevent systemui-related crashes
+- Display: Handle zero auto brightness adjustment (Miui cam if it exists)
+- Audioflinger: Do not allow DAP (Dolby atmos if it exists) effect to be suspended
 
 ## Known bugs
 
-- [Launcher crashing on tablet](https://github.com/boydaihungst/treble_build_derpfest/issues/24)
+- [Launcher crashing on tablet (need to confirm with new derp launcher)](https://github.com/boydaihungst/treble_build_derpfest/issues/24)
 - [The rest](https://github.com/boydaihungst/treble_build_derpfest/issues)
 
 ## Note

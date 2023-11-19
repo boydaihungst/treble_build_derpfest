@@ -1,14 +1,15 @@
-From 6d2315896eaa465e6a5cb2a6c4cd86300c87a52c Mon Sep 17 00:00:00 2001
-From: Huy Hoang <boydaihungst@gmail.com>
-Date: Mon, 13 Nov 2023 10:29:04 +0700
-Subject: [PATCH] udfps: ignore extra dim
+From 92447f458b67b3c9f5ae3d85e4697b95f304489f Mon Sep 17 00:00:00 2001
+From: MrHereAndThere <38396158+boydaihungst@users.noreply.github.com>
+Date: Fri, 17 Nov 2023 09:22:29 +0700
+Subject: [PATCH 45/45] fix(fod): Extra Dim overlap fod overlay
 
+Extra Dim will set display panel brightness to lowest value possible, which will also effect FOD overlay.
 ---
  .../systemui/biometrics/UdfpsController.java  | 19 ++++++++++++++++++-
  1 file changed, 18 insertions(+), 1 deletion(-)
 
 diff --git a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java
-index 75aa17502f4a..7ab308ea9e6e 100644
+index 13c621f456bb..501a2b7c6476 100644
 --- a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java
 +++ b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java
 @@ -43,6 +43,7 @@ import android.hardware.fingerprint.FingerprintSensorProperties;
@@ -19,7 +20,7 @@ index 75aa17502f4a..7ab308ea9e6e 100644
  import android.hardware.input.InputManager;
  import android.os.Build;
  import android.os.Handler;
-@@ -181,6 +182,8 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+@@ -180,6 +181,8 @@ public class UdfpsController implements DozeReceiver, Dumpable {
      @NonNull private final SecureSettings mSecureSettings;
      @NonNull private final UdfpsUtils mUdfpsUtils;
      @NonNull private final InputManager mInputManager;
@@ -28,7 +29,7 @@ index 75aa17502f4a..7ab308ea9e6e 100644
      private final boolean mIgnoreRefreshRate;
  
      // Currently the UdfpsController supports a single UDFPS sensor. If devices have multiple
-@@ -899,7 +902,8 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+@@ -894,7 +897,8 @@ public class UdfpsController implements DozeReceiver, Dumpable {
              @NonNull SecureSettings secureSettings,
              @NonNull InputManager inputManager,
              @NonNull UdfpsUtils udfpsUtils,
@@ -38,7 +39,7 @@ index 75aa17502f4a..7ab308ea9e6e 100644
          mContext = context;
          mExecution = execution;
          mVibrator = vibrator;
-@@ -945,6 +949,7 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+@@ -940,6 +944,7 @@ public class UdfpsController implements DozeReceiver, Dumpable {
          mSecureSettings = secureSettings;
          mUdfpsUtils = udfpsUtils;
          mInputManager = inputManager;
@@ -46,7 +47,7 @@ index 75aa17502f4a..7ab308ea9e6e 100644
  
          mTouchProcessor = mFeatureFlags.isEnabled(Flags.UDFPS_NEW_TOUCH_DETECTION)
                  ? singlePointerTouchProcessor : null;
-@@ -1014,6 +1019,10 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+@@ -1009,6 +1014,10 @@ public class UdfpsController implements DozeReceiver, Dumpable {
  
      private void showUdfpsOverlay(@NonNull UdfpsControllerOverlay overlay) {
          mExecution.assertIsMainThread();
@@ -54,10 +55,10 @@ index 75aa17502f4a..7ab308ea9e6e 100644
 +        if (mIgnoreExtraDim) {
 +            Log.d(TAG, "Current extra dim state (showUdfpsOverlay): " + mIgnoreExtraDim);
 +        }
-         mFrameworkDimming = mContext.getResources().getBoolean(com.android.internal.R.bool.config_udfpsFrameworkDimming);
-         parseBrightnessAlphaArray();
+ 
          mOverlay = overlay;
-@@ -1270,6 +1279,10 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+         final int requestReason = overlay.getRequestReason();
+@@ -1211,6 +1220,10 @@ public class UdfpsController implements DozeReceiver, Dumpable {
              return;
          }
          if (isOptical()) {
@@ -68,7 +69,7 @@ index 75aa17502f4a..7ab308ea9e6e 100644
              mLatencyTracker.onActionStart(LatencyTracker.ACTION_UDFPS_ILLUMINATE);
          }
          // Refresh screen timeout and boost process priority if possible.
-@@ -1365,6 +1378,10 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+@@ -1297,6 +1310,10 @@ public class UdfpsController implements DozeReceiver, Dumpable {
          mActivePointerId = -1;
          mAcquiredReceived = false;
          if (mOnFingerDown) {

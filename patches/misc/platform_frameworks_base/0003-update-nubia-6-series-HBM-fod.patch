@@ -6,20 +6,19 @@ Subject: [PATCH] nubia-6-series-hbm-fod
 ---
  core/res/res/values/config.xml                |  26 +++++
  core/res/res/values/symbols.xml               |   5 +
- .../systemui/biometrics/UdfpsController.java  | 108 ++++++++++++++++--
+ .../systemui/biometrics/UdfpsController.java  | 107 ++++++++++++++++--
  .../biometrics/UdfpsControllerOverlay.kt      |   6 +
  .../android/systemui/biometrics/UdfpsView.kt  |   2 -
- 5 files changed, 136 insertions(+), 11 deletions(-)
+ 5 files changed, 136 insertions(+), 10 deletions(-)
 
 diff --git a/core/res/res/values/config.xml b/core/res/res/values/config.xml
-index b4a72812aa41..3d3dcb6329b0 100644
+index 3b46a09388d8..01663ee38538 100644
 --- a/core/res/res/values/config.xml
 +++ b/core/res/res/values/config.xml
-@@ -6443,4 +6443,30 @@
+@@ -6476,4 +6476,30 @@
  
      <!-- Whether unlocking and waking a device are sequenced -->
      <bool name="config_orderUnlockAndWake">false</bool>
-+
 +    <!-- Flag to enable framework dimming for udfps -->
 +    <bool name="config_udfpsFrameworkDimming">false</bool>
 +
@@ -45,12 +44,13 @@ index b4a72812aa41..3d3dcb6329b0 100644
 +         before the screen has had chance to switch out of HBM mode -->
 +     <integer name="config_udfpsDimmingDisableDelay">0</integer>
 +     <integer name="config_udfpsDimmingEnableDelay">0</integer>
++
  </resources>
 diff --git a/core/res/res/values/symbols.xml b/core/res/res/values/symbols.xml
-index a61d0d446a06..5b2eaad9703b 100644
+index 9f41ba55de65..e09c8f744ba6 100644
 --- a/core/res/res/values/symbols.xml
 +++ b/core/res/res/values/symbols.xml
-@@ -5135,4 +5135,9 @@
+@@ -5148,4 +5148,9 @@
  
    <!-- Whether we order unlocking and waking -->
    <java-symbol type="bool" name="config_orderUnlockAndWake" />
@@ -61,10 +61,10 @@ index a61d0d446a06..5b2eaad9703b 100644
 +  <java-symbol type="integer"   name="config_udfpsDimmingEnableDelay" />
  </resources>
 diff --git a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java
-index 13c621f456bb..acafe65e15e8 100644
+index 501a2b7c6476..6f94c98e71ab 100644
 --- a/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java
 +++ b/packages/SystemUI/src/com/android/systemui/biometrics/UdfpsController.java
-@@ -52,6 +52,7 @@ import android.os.Trace;
+@@ -53,6 +53,7 @@ import android.os.Trace;
  import android.os.SystemProperties;
  import android.os.VibrationAttributes;
  import android.os.VibrationEffect;
@@ -72,7 +72,7 @@ index 13c621f456bb..acafe65e15e8 100644
  import android.util.Log;
  import android.view.LayoutInflater;
  import android.view.MotionEvent;
-@@ -219,6 +220,10 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+@@ -222,6 +223,10 @@ public class UdfpsController implements DozeReceiver, Dumpable {
      private boolean mAttemptedToDismissKeyguard;
      private final Set<Callback> mCallbacks = new HashSet<>();
      private final int mUdfpsVendorCode;
@@ -83,17 +83,16 @@ index 13c621f456bb..acafe65e15e8 100644
  
      @VisibleForTesting
      public static final VibrationAttributes UDFPS_VIBRATION_ATTRIBUTES =
-@@ -1009,7 +1014,8 @@ public class UdfpsController implements DozeReceiver, Dumpable {
- 
+@@ -1015,6 +1020,8 @@ public class UdfpsController implements DozeReceiver, Dumpable {
      private void showUdfpsOverlay(@NonNull UdfpsControllerOverlay overlay) {
          mExecution.assertIsMainThread();
--
+         mIgnoreExtraDim = mColorDisplayManager.isReduceBrightColorsActivated();
 +        mFrameworkDimming = mContext.getResources().getBoolean(com.android.internal.R.bool.config_udfpsFrameworkDimming);
 +        parseBrightnessAlphaArray();
-         mOverlay = overlay;
-         final int requestReason = overlay.getRequestReason();
-         if (requestReason == REASON_AUTH_KEYGUARD
-@@ -1149,6 +1155,48 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+         if (mIgnoreExtraDim) {
+             Log.d(TAG, "Current extra dim state (showUdfpsOverlay): " + mIgnoreExtraDim);
+         }
+@@ -1158,6 +1165,48 @@ public class UdfpsController implements DozeReceiver, Dumpable {
          }
      }
  
@@ -142,7 +141,7 @@ index 13c621f456bb..acafe65e15e8 100644
      private boolean isOptical() {
          return mSensorProps.sensorType == FingerprintSensorProperties.TYPE_UDFPS_OPTICAL;
      }
-@@ -1157,6 +1205,17 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+@@ -1166,6 +1215,17 @@ public class UdfpsController implements DozeReceiver, Dumpable {
          return mOnFingerDown;
      }
  
@@ -160,7 +159,7 @@ index 13c621f456bb..acafe65e15e8 100644
      private void dispatchOnUiReady(long requestId) {
          if (mAlternateTouchProvider != null) {
              mBiometricExecutor.execute(() -> {
-@@ -1252,18 +1311,27 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+@@ -1265,18 +1325,27 @@ public class UdfpsController implements DozeReceiver, Dumpable {
              } else {
                  view.configureDisplay(() -> dispatchOnUiReady(requestId));
              }
@@ -196,7 +195,7 @@ index 13c621f456bb..acafe65e15e8 100644
      }
  
      private void onFingerUp(long requestId, @NonNull UdfpsView view) {
-@@ -1325,6 +1393,28 @@ public class UdfpsController implements DozeReceiver, Dumpable {
+@@ -1342,6 +1411,28 @@ public class UdfpsController implements DozeReceiver, Dumpable {
          mOnFingerDown = false;
          if (isOptical()) {
              unconfigureDisplay(view);

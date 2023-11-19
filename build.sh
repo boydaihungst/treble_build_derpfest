@@ -119,6 +119,7 @@ buildVndkliteVariant() {
 
 generatePackages() {
 	echo "--> Generating packages"
+  rm -rf $BD/derpfest_*.img.xz
 	xz -cv $BD/system-treble_arm64_bgN.img -T0 >"$BD/derpfest_arm64-ab-unofficial-$buildDate.img.xz"
 	xz -cv $BD/system-treble_arm64_bgN-mini.img -T0 >"$BD/derpfest_arm64-ab-mini-unofficial-$buildDate.img.xz"
 	# xz -cv $BD/system-treble_arm64_bvN.img -T0 >"$BD/derpfest_arm64-ab-vanilla-unofficial-$buildDate.img.xz"

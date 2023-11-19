@@ -1,46 +1,26 @@
 {
-  "version": "v2023.11.17",
-  "date": "1700198835",
+  "version": "v2023.11.19",
+  "date": "1700356293",
   "variants": [
     {
       "name": "treble_arm64_bgN-mini",
-      "size": "1196105356",
-      "url": "https://github.com/boydaihungst/treble_build_derpfest/releases/download/v2023.11.17/derpfest_arm64-ab-mini-unofficial-20231116.img.xz"
-    },
-    {
-      "name": "treble_arm64_bgN-mini",
-      "size": "1196218848",
-      "url": "https://github.com/boydaihungst/treble_build_derpfest/releases/download/v2023.11.17/derpfest_arm64-ab-mini-unofficial-20231117.img.xz"
+      "size": "1196166780",
+      "url": "https://github.com/boydaihungst/treble_build_derpfest/releases/download/v2023.11.19/derpfest_arm64-ab-mini-unofficial-20231119.img.xz"
     },
     {
       "name": "treble_arm64_bgN-vndklite",
-      "size": "1166487860",
-      "url": "https://github.com/boydaihungst/treble_build_derpfest/releases/download/v2023.11.17/derpfest_arm64-ab-mini-vndklite-unofficial-20231116.img.xz"
-    },
-    {
-      "name": "treble_arm64_bgN-vndklite",
-      "size": "1166570424",
-      "url": "https://github.com/boydaihungst/treble_build_derpfest/releases/download/v2023.11.17/derpfest_arm64-ab-mini-vndklite-unofficial-20231117.img.xz"
+      "size": "1166640380",
+      "url": "https://github.com/boydaihungst/treble_build_derpfest/releases/download/v2023.11.19/derpfest_arm64-ab-mini-vndklite-unofficial-20231119.img.xz"
     },
     {
       "name": "treble_arm64_bgN",
-      "size": "1593758988",
-      "url": "https://github.com/boydaihungst/treble_build_derpfest/releases/download/v2023.11.17/derpfest_arm64-ab-unofficial-20231116.img.xz"
-    },
-    {
-      "name": "treble_arm64_bgN",
-      "size": "1593821796",
-      "url": "https://github.com/boydaihungst/treble_build_derpfest/releases/download/v2023.11.17/derpfest_arm64-ab-unofficial-20231117.img.xz"
+      "size": "1593882248",
+      "url": "https://github.com/boydaihungst/treble_build_derpfest/releases/download/v2023.11.19/derpfest_arm64-ab-unofficial-20231119.img.xz"
     },
     {
       "name": "treble_arm64_bgN-vndklite",
-      "size": "1552339916",
-      "url": "https://github.com/boydaihungst/treble_build_derpfest/releases/download/v2023.11.17/derpfest_arm64-ab-vndklite-unofficial-20231116.img.xz"
-    },
-    {
-      "name": "treble_arm64_bgN-vndklite",
-      "size": "1552569752",
-      "url": "https://github.com/boydaihungst/treble_build_derpfest/releases/download/v2023.11.17/derpfest_arm64-ab-vndklite-unofficial-20231117.img.xz"
+      "size": "1552412036",
+      "url": "https://github.com/boydaihungst/treble_build_derpfest/releases/download/v2023.11.19/derpfest_arm64-ab-vndklite-unofficial-20231119.img.xz"
     }
   ]
 }
