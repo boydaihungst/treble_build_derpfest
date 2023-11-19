@@ -2,7 +2,9 @@
 
 ## Change logs
 
-- Replaced nexus/pixel launcher with derp laucher
+This is a hotfix for the setting fingerprint crash issue. There aren't too many changes.
+
+- ~~Replaced nexus/pixel launcher with derp laucher~~
 
 - Settings: Display auto rotate settings instead of toggle
 - display: Import screen resolution from cheetah stock
@@ -11,20 +13,18 @@
 - Settings: BlockSensors: Fix/update the way Footer info is added
 - Settings: Make sensor block package list configurable
 - Settings: Sensor block per-package switch[2/2]
-- Settings: Fix potential NPE in WifiTetherSecurityPreferenceController
 
 ## Bug Fixes
 
-- FingerprintSettings: Don't crash when sensor properties is null.
-[#36](https://github.com/boydaihungst/treble_build_derpfest/issues/36)
+- FingerprintSettings: Don't crash when sensor properties is null. #36 
 - Pulse: Fix orientation checks
 - Pulse: Prevent systemui-related crashes
 - Display: Handle zero auto brightness adjustment (Miui cam if it exists)
 - Audioflinger: Do not allow DAP (Dolby atmos if it exists) effect to be suspended
-
+- Fixed battery style crash. #30 
 ## Known bugs
 
-- [Launcher crashing on tablet (need to confirm with new derp launcher)](https://github.com/boydaihungst/treble_build_derpfest/issues/24)
+- [Launcher crashing on tablet](https://github.com/boydaihungst/treble_build_derpfest/issues/24)
 - [The rest](https://github.com/boydaihungst/treble_build_derpfest/issues)
 
 ## Note
