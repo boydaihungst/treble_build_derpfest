@@ -177,9 +177,9 @@ buildGappsVariant
 # buildVanillaVariant
 # buildMiniVariant
 # buildVndkliteVariant
-# generatePackages
-# generateOta
-# release
+generatePackages
+generateOta
+release
 END=$(date +%s)
 ELAPSEDM=$(($(($END - $START)) / 60))
 ELAPSEDS=$(($(($END - $START)) - $ELAPSEDM * 60))
