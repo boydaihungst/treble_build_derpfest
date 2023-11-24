@@ -1,0 +1,32 @@
+From 120a73e29086dfc0406f7b060a2c9c91410b0a89 Mon Sep 17 00:00:00 2001
+From: Huy Hoang <boydaihungst@gmail.com>
+Date: Fri, 24 Nov 2023 18:32:50 +0700
+Subject: [PATCH] remove
+
+---
+ sepolicy/nubia.te | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/sepolicy/nubia.te b/sepolicy/nubia.te
+index 42ddf93..ec6a7a4 100644
+--- a/sepolicy/nubia.te
++++ b/sepolicy/nubia.te
+@@ -2,3 +2,15 @@
+ type sensitivity_sysfs, file_type;
+ allow shell sensitivity_sysfs:file rw_file_perms;
+ allow system_app sensitivity_sysfs:file rw_file_perms;
++
++allow kernel self:capability kill;
++
++r_dir_file(system_suspend, sysfs);
++r_dir_file(system_suspend, sysfs_rtc);
++
++type hal_audio_default, file_type;
++type vendor_hal_perf_default, domain;
++allow vendor_hal_perf_default hal_audio_default:dir search;
++
++dontaudit untrusted_app_32 {wifiscanner_service update_engine_service system_update_service persistent_data_block_service network_score_service}:service_manager find;
++dontaudit untrusted_app_32 property_socket:sock_file write;
+-- 
+2.43.0
+

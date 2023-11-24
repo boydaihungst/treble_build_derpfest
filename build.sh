@@ -12,7 +12,6 @@ echo
 set -e
 
 GIT_REPO="treble_build_derpfest"
-GIT_BRANCH="A14"
 GIT_OWNER="boydaihungst"
 BL="$PWD/$GIT_REPO"
 OUT="out/target/product/tdgsi_arm64_ab"
@@ -121,11 +120,11 @@ generatePackages() {
 	echo "--> Generating packages"
   rm -rf $BD/derpfest_*.img.xz
 	xz -cv $BD/system-treble_arm64_bgN.img -T0 >"$BD/derpfest_arm64-ab-unofficial-$buildDate.img.xz"
-	xz -cv $BD/system-treble_arm64_bgN-mini.img -T0 >"$BD/derpfest_arm64-ab-mini-unofficial-$buildDate.img.xz"
+	# xz -cv $BD/system-treble_arm64_bgN-mini.img -T0 >"$BD/derpfest_arm64-ab-mini-unofficial-$buildDate.img.xz"
 	# xz -cv $BD/system-treble_arm64_bvN.img -T0 >"$BD/derpfest_arm64-ab-vanilla-unofficial-$buildDate.img.xz"
 	if [[ -n "${PW}" ]]; then
 		xz -cv $BD/system-treble_arm64_bgN-vndklite.img -T0 >"$BD/derpfest_arm64-ab-vndklite-unofficial-$buildDate.img.xz"
-		xz -cv $BD/system-treble_arm64_bgN-mini-vndklite.img -T0 >"$BD/derpfest_arm64-ab-mini-vndklite-unofficial-$buildDate.img.xz"
+		# xz -cv $BD/system-treble_arm64_bgN-mini-vndklite.img -T0 >"$BD/derpfest_arm64-ab-mini-vndklite-unofficial-$buildDate.img.xz"
 		# xz -cv $BD/system-treble_arm64_bvN-vndklite.img -T0 >"$BD/derpfest_arm64-ab-vanilla-vndklite-unofficial-$buildDate.img.xz"
 	fi
 	echo
@@ -175,12 +174,12 @@ syncRepos
 applyPatches
 setupEnv
 buildGappsVariant
-buildVanillaVariant
-buildMiniVariant
-buildVndkliteVariant
-generatePackages
-generateOta
-release
+# buildVanillaVariant
+# buildMiniVariant
+# buildVndkliteVariant
+# generatePackages
+# generateOta
+# release
 END=$(date +%s)
 ELAPSEDM=$(($(($END - $START)) / 60))
 ELAPSEDS=$(($(($END - $START)) - $ELAPSEDM * 60))

@@ -2,6 +2,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/window_extensions.mk)
 $(call inherit-product, vendor/derp/config/common_full_phone.mk)
 $(call inherit-product, vendor/derp/config/BoardConfigDerpFest.mk)
 $(call inherit-product, device/derp/sepolicy/common/sepolicy.mk)
+$(call inherit-product, vendor/nubia/nx669j/nx669j-vendor.mk)
 -include vendor/derp/build/core/config.mk
 
 TARGET_HAS_FUSEBLK_SEPOLICY_ON_VENDOR := true
@@ -20,6 +21,29 @@ BUILD_BROKEN_DUP_RULES := true
 TARGET_NO_KERNEL_OVERRIDE := true
 
 TARGET_NO_KERNEL_IMAGE := true
+
+# Telephony
+PRODUCT_PACKAGES += \
+    extphonelib \
+    extphonelib-product \
+    extphonelib.xml \
+    extphonelib_product.xml \
+    ims-ext-common \
+    ims_ext_common.xml \
+    qti-telephony-hidl-wrapper \
+    qti_telephony_hidl_wrapper.xml \
+    qti-telephony-hidl-wrapper-prd \
+    qti_telephony_hidl_wrapper_prd.xml \
+    qti-telephony-utils \
+    qti_telephony_utils.xml \
+    qti-telephony-utils-prd \
+    qti_telephony_utils_prd.xml \
+    telephony-ext
+
+PRODUCT_BOOT_JARS += \
+    telephony-ext \
+    WfdCommon \
+		tcmiface 
 
 DERP_BUILDTYPE := CI
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
