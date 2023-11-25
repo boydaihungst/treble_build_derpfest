@@ -1,5 +1,9 @@
 # DerpFest GSI
 
+From now on I will stop building GSI. I only build GSI for testing on nubia red magic 6series.
+It may work on other devices, but it is not guaranteed.
+You guys can get the latest build from [KoysX/treble_DerpFest_GSI](https://github.com/KoysX/treble_DerpFest_GSI/)
+
 ## Build
 
 To get started with building DerpFest GSI, you'll need to get familiar with
