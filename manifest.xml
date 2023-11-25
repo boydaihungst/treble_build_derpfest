@@ -13,5 +13,8 @@
   <project name="ponces/treble_adapter" path="sas-creator" remote="github" revision="master" />
   <project name="phhusson/vendor_magisk" path="vendor/magisk" remote="github"
     revision="android-10.0" />
-  <project name="boydaihungst/vendor-for-gsi-nx669j" path="vendor/nubia/nx669j" remote="github" revision="master" />
+  <project name="boydaihungst/vendor-for-gsi-nx669j" path="vendor/nubia/nx669j" remote="github"
+    revision="master" />
+  <remove-project name="vendor_codeaurora_telephony" />
+
 </manifest>
