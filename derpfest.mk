@@ -26,8 +26,6 @@ PRODUCT_BOOT_JARS += \
     telephony-ext \
     WfdCommon \
 		tcmiface \
-		telephony-common \
-		ims-common \
 		nubiatel-common \
 		telephony-static-config 
 

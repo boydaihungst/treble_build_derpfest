@@ -8,16 +8,10 @@ Full guide for newbie: [ZTE-Nubia-Red-Magic-6-6-Pro-6s-6s-Pro](https://github.co
 
 ## Change logs
 
-- Added support for shoulder triggers/buttons (6 series, 5G 5S 5G lite).
-Tested with [Octopus](https://play.google.com/store/apps/details?id=com.chaozhuo.gameassistant)
-- Added shouler triggers/buttons toggle quick setting tile
-- New quick setting tiles layout
-- Added DerpSpace monet engine wallpaper color picker
 
 ## Bug Fixes
 
-- Fixed monet engine background color
-- Fixed can't change theme after dirty flash
+- Fixed mobile network crash
 
 ## Known bugs
 

@@ -5,7 +5,6 @@ Subject: [PATCH] feat(overlay): nubia
 
 ---
  base.mk                                       |    8 +-
- derpfest.mk                                   |   52 +
  rro_overlays/NubiaBluetooth/Android.bp        |    6 +
  .../NubiaBluetooth/AndroidManifest.xml        |   23 +
  .../NubiaBluetooth/res/values/config.xml      |   39 +
@@ -27,8 +26,7 @@ Subject: [PATCH] feat(overlay): nubia
  rro_overlays/WifiOverlay/res/values/bools.xml |   61 +
  .../WifiOverlay/res/values/integers.xml       |    6 +
  .../WifiOverlay/res/values/strings.xml        |   17 +
- 23 files changed, 3389 insertions(+), 1 deletion(-)
- create mode 100644 derpfest.mk
+ 22 files changed, 3337 insertions(+), 1 deletion(-)
  create mode 100644 rro_overlays/NubiaBluetooth/Android.bp
  create mode 100644 rro_overlays/NubiaBluetooth/AndroidManifest.xml
  create mode 100644 rro_overlays/NubiaBluetooth/res/values/config.xml
@@ -70,64 +68,6 @@ index 90498f1..6cf118b 100644
  
  PRODUCT_PACKAGES += \
      lightsctl \
-diff --git a/derpfest.mk b/derpfest.mk
-new file mode 100644
-index 0000000..194d909
---- /dev/null
-+++ b/derpfest.mk
-@@ -0,0 +1,52 @@
-+$(call inherit-product, $(SRC_TARGET_DIR)/product/window_extensions.mk)
-+$(call inherit-product, vendor/derp/config/common_full_phone.mk)
-+$(call inherit-product, vendor/derp/config/BoardConfigDerpFest.mk)
-+$(call inherit-product, device/derp/sepolicy/common/sepolicy.mk)
-+$(call inherit-product, vendor/derp/config/common_full_phone.mk)
-+$(call inherit-product, vendor/nubia/nx669j/nx669j-vendor.mk)
-+-include vendor/derp/build/core/config.mk
-+
-+TARGET_HAS_FUSEBLK_SEPOLICY_ON_VENDOR := true
-+TARGET_USES_PREBUILT_VENDOR_SEPOLICY := true
-+SELINUX_IGNORE_NEVERALLOWS := true
-+
-+USE_LEGACY_BOOTANIMATION := false
-+
-+BOARD_EXT4_SHARE_DUP_BLOCKS := true
-+
-+TARGET_BOOT_ANIMATION_RES := 1080
-+# Currently haven't been supported yet
-+EXTRA_UDFPS_ANIMATIONS := true
-+TARGET_FACE_UNLOCK_SUPPORTED := true
-+BUILD_BROKEN_DUP_RULES := true
-+TARGET_NO_KERNEL_OVERRIDE := true
-+
-+TARGET_NO_KERNEL_IMAGE := true
-+
-+# Telephony
-+PRODUCT_PACKAGES += \
-+    extphonelib \
-+    extphonelib-product \
-+    extphonelib.xml \
-+    extphonelib_product.xml \
-+    ims-ext-common \
-+    ims_ext_common.xml \
-+    qti-telephony-hidl-wrapper \
-+    qti_telephony_hidl_wrapper.xml \
-+    qti-telephony-hidl-wrapper-prd \
-+    qti_telephony_hidl_wrapper_prd.xml \
-+    qti-telephony-utils \
-+    qti_telephony_utils.xml \
-+    qti-telephony-utils-prd \
-+    qti_telephony_utils_prd.xml \
-+    telephony-ext
-+
-+PRODUCT_BOOT_JARS += \
-+    telephony-ext \
-+    WfdCommon \
-+		tcmiface 
-+
-+DERP_BUILDTYPE := CI
-+PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-+    ro.system.ota.json_url=https://raw.githubusercontent.com/boydaihungst/treble_build_derpfest/A14/ota.json
-+
 diff --git a/rro_overlays/NubiaBluetooth/Android.bp b/rro_overlays/NubiaBluetooth/Android.bp
 new file mode 100644
 index 0000000..c157c3b
