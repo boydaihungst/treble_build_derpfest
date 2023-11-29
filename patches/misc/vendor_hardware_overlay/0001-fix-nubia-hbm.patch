@@ -4,14 +4,14 @@ Date: Mon, 6 Nov 2023 00:34:18 +0700
 Subject: [PATCH] fix nubia hbm
 
 ---
- Nubia/RedMagic6series/res/values/config.xml | 270 ++++++++++++++++++++
- 1 files changed, 270 insertions(+)
+ Nubia/RedMagic6series/res/values/config.xml | 271 ++++++++++++++++++++
+ 1 file changed, 271 insertions(+)
 
 diff --git a/Nubia/RedMagic6series/res/values/config.xml b/Nubia/RedMagic6series/res/values/config.xml
-index 7c15f67..30f20e5 100644
+index 7c15f67..c6cd147 100644
 --- a/Nubia/RedMagic6series/res/values/config.xml
 +++ b/Nubia/RedMagic6series/res/values/config.xml
-@@ -636,4 +636,274 @@
+@@ -636,4 +636,275 @@
      <item>1839</item> <!-- <item>sensorLocationY</item> -->
      <item>95</item>   <!-- <item>sensorRadius</item> -->
    </integer-array>
@@ -285,6 +285,8 @@ index 7c15f67..30f20e5 100644
 +  <integer name="config_udfpsDimmingDisableDelay">2</integer>
 +  <integer name="config_udfpsDimmingEnableDelay">2</integer>
 +
++
  </resources>
 -- 
-2.42.1
+2.43.0
+

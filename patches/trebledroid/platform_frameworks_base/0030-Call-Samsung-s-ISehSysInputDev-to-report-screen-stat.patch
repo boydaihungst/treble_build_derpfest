@@ -7,23 +7,23 @@ Subject: [PATCH 30/44] Call Samsung's ISehSysInputDev to report screen state
 This fixes touchscreen not waking up on Galaxy F23
 ---
  services/core/Android.bp                      |  1 +
- .../server/display/LocalDisplayAdapter.java   | 32 +++++++++++++++++++
- 2 files changed, 33 insertions(+)
+ .../server/display/LocalDisplayAdapter.java   | 30 +++++++++++++++++++
+ 2 files changed, 31 insertions(+)
 
 diff --git a/services/core/Android.bp b/services/core/Android.bp
-index f8d19ec9903d..735959270c11 100644
+index 3fb279e8cc2d..911df41dd9b3 100644
 --- a/services/core/Android.bp
 +++ b/services/core/Android.bp
-@@ -186,6 +186,7 @@ java_library_static {
-         "com.android.sysprop.watchdog",
+@@ -188,6 +188,7 @@ java_library_static {
          "ImmutabilityAnnotation",
          "securebox",
+         "vendor.aospa.biometrics.face",
 +        "vendor.samsung.hardware.sysinput-V1.2-java", // HIDL
      ],
      javac_shard_size: 50,
      javacflags: [
 diff --git a/services/core/java/com/android/server/display/LocalDisplayAdapter.java b/services/core/java/com/android/server/display/LocalDisplayAdapter.java
-index c7c0fab6140d..537027f2d77f 100644
+index c7c0fab6140d..dca4dc32d0b2 100644
 --- a/services/core/java/com/android/server/display/LocalDisplayAdapter.java
 +++ b/services/core/java/com/android/server/display/LocalDisplayAdapter.java
 @@ -33,6 +33,7 @@ import android.os.Trace;
@@ -52,7 +52,7 @@ index c7c0fab6140d..537027f2d77f 100644
  
          LocalDisplayDevice(IBinder displayToken, long physicalDisplayId,
                  SurfaceControl.StaticDisplayInfo staticDisplayInfo,
-@@ -821,17 +826,44 @@ final class LocalDisplayAdapter extends DisplayAdapter {
+@@ -821,16 +826,41 @@ final class LocalDisplayAdapter extends DisplayAdapter {
                              }
                              mSidekickActive = false;
                          }
@@ -82,7 +82,6 @@ index c7c0fab6140d..537027f2d77f 100644
                          } finally {
                              Trace.traceEnd(Trace.TRACE_TAG_POWER);
                          }
-+
 +                        if (samsungSysinput != null) {
 +                            try {
 +                                Log.d("PHH", "setTspEnable 1, " + state + ", false");
@@ -93,10 +92,8 @@ index c7c0fab6140d..537027f2d77f 100644
 +                        }
 +
                          setCommittedState(state);
-+
                          // If we're entering a suspended (but not OFF) power state and we
                          // have a sidekick available, tell it now that it can take control.
-                         if (Display.isSuspendedState(state) && state != Display.STATE_OFF
 -- 
-2.25.1
+2.43.0
 
