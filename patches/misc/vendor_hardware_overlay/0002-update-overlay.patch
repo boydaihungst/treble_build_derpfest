@@ -1,0 +1,41 @@
+From 52c1a84a93c7485ae8d2d9713e63bf0e0954bba5 Mon Sep 17 00:00:00 2001
+From: Huy Hoang <boydaihungst@gmail.com>
+Date: Thu, 30 Nov 2023 14:01:59 +0700
+Subject: [PATCH] update: overlay
+
+---
+ Nubia/RedMagic6series/res/values/config.xml | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/Nubia/RedMagic6series/res/values/config.xml b/Nubia/RedMagic6series/res/values/config.xml
+index c6cd147..fcd320a 100644
+--- a/Nubia/RedMagic6series/res/values/config.xml
++++ b/Nubia/RedMagic6series/res/values/config.xml
+@@ -905,6 +905,23 @@
+          before the screen has had chance to switch out of HBM mode -->
+   <integer name="config_udfpsDimmingDisableDelay">2</integer>
+   <integer name="config_udfpsDimmingEnableDelay">2</integer>
++  <string-array translatable="false" name="networkAttributes">
++    <item>"wifi,1,1,1,-1,true"</item>
++    <item>"mobile,0,0,0,-1,true"</item>
++    <item>"mobile_mms,2,0,4,60000,true"</item>
++    <item>"mobile_supl,3,0,2,60000,true"</item>
++    <item>"mobile_dun,4,0,2,60000,true"</item>
++    <item>"mobile_hipri,5,0,3,60000,true"</item>
++    <item>"mobile_fota,10,0,2,60000,true"</item>
++    <item>"mobile_ims,11,0,2,60000,true"</item>
++    <item>"mobile_cbs,12,0,2,60000,true"</item>
++    <item>"mobile_ia,14,0,2,-1,true"</item>
++    <item>"bluetooth,7,7,2,-1,true"</item>
++    <item>"ethernet,9,9,9,-1,true"</item>
++    <item>"mobile_emergency,15,0,5,-1,true</item>
++  </string-array>
++  <integer name="config_defaultRefreshRate">120</integer>
+ 
+-
++  <!-- Flag specifying whether or not IMS will use the dynamic ImsResolver -->
++  <bool name="config_dynamic_bind_ims">true</bool>
+ </resources>
+-- 
+2.43.0
+

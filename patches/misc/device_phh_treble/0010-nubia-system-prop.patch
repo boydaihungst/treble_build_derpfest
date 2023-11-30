@@ -1,0 +1,23 @@
+From 4fc661c1129c57ebaf14831b8477a61c8f938859 Mon Sep 17 00:00:00 2001
+From: Huy Hoang <boydaihungst@gmail.com>
+Date: Wed, 29 Nov 2023 23:09:03 +0700
+Subject: [PATCH] nubia: system prop
+
+---
+ system.prop |  3 +++
+ 1 files changed, 3 insertions(+)
+
+diff --git a/system.prop b/system.prop
+index 8d63f46..81f9387 100644
+--- a/system.prop
++++ b/system.prop
+@@ -49,3 +49,6 @@ vendor.usb.use_ffs_mtp=1
+ 
+ # WifiDisplay
+ persist.debug.wfd.enable=1
++persist.vendor.dpm.feature=11
++ro.telephony.sim_slots.count=2
++telephony.active_modems.max_count=2
+-- 
+2.43.0
+

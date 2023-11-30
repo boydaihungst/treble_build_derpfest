@@ -169,9 +169,9 @@ release() {
 	fi
 }
 
-initRepos
-syncRepos
-applyPatches
+# initRepos
+# syncRepos
+# applyPatches
 setupEnv
 buildGappsVariant
 # buildVanillaVariant

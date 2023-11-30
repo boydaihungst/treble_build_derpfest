@@ -1,11 +1,11 @@
 {
-  "version": "v2023.11.26",
-  "date": "1700961047",
+  "version": "v2023.11.30",
+  "date": "1701354464",
   "variants": [
     {
       "name": "treble_arm64_bgN",
-      "size": "1601854128",
-      "url": "https://github.com/boydaihungst/treble_build_derpfest/releases/download/v2023.11.26/derpfest_arm64-ab-unofficial-20231126.img.xz"
+      "size": "1656859328",
+      "url": "https://github.com/boydaihungst/treble_build_derpfest/releases/download/v2023.11.30/derpfest_arm64-ab-unofficial-20231130.img.xz"
     }
   ]
 }

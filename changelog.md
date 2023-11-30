@@ -1,4 +1,4 @@
-# v2023.11.24
+# v2023.11.30
 
 From now on I will stop build gsi. I only build gsi for testing redmagic 6series.
 It may work on other devices, but not guaranteed.
@@ -8,10 +8,11 @@ Full guide for newbie: [ZTE-Nubia-Red-Magic-6-6-Pro-6s-6s-Pro](https://github.co
 
 ## Change logs
 
+- Smooth display
+- Force peak refresh rate
+- etc
 
 ## Bug Fixes
-
-- Fixed mobile network crash
 
 ## Known bugs
 
