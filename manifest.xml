@@ -15,8 +15,4 @@
     revision="android-10.0" />
   <project name="boydaihungst/vendor-for-gsi-nx669j" path="vendor/nubia/nx669j" remote="github"
     revision="master" />
-  <remove-project name="vendor_codeaurora_telephony" />
-  <remove-project name="packages_apps_DerpLauncher" />
-
-  <project path="packages/apps/DerpLauncher" name="packages_apps_DerpLauncher" groups="pdk-fs" remote="derp" revision="14-next"/>
 </manifest>

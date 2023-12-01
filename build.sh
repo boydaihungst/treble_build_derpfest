@@ -172,8 +172,8 @@ release() {
 # initRepos
 # syncRepos
 # applyPatches
-setupEnv
-buildGappsVariant
+# setupEnv
+# buildGappsVariant
 # buildVanillaVariant
 # buildMiniVariant
 # buildVndkliteVariant

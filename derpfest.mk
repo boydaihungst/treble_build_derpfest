@@ -22,18 +22,10 @@ TARGET_NO_KERNEL_OVERRIDE := true
 TARGET_NO_KERNEL_IMAGE := true
 
 PRODUCT_BOOT_JARS += \
-    telephony-ext \
     WfdCommon \
 		tcmiface \
-		nubiatel-common \
-		telephony-static-config \
 		QPerformance \
-		nubia-vibrate \
     UxPerformance
-
-PRODUCT_COPY_FILES += \
-    vendor/nubia/nx669j/proprietary/system_ext/lib64/libimscamera_jni.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/priv-app/ims/lib/arm64/libimscamera_jni.so \
-    vendor/nubia/nx669j/proprietary/system_ext/lib64/libimsmedia_jni.so:$(TARGET_COPY_OUT_SYSTEM_EXT)/priv-app/ims/lib/arm64/libimsmedia_jni.so
 
 DERP_BUILDTYPE := CI
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
