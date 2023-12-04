@@ -23,8 +23,8 @@ TARGET_NO_KERNEL_IMAGE := true
 
 PRODUCT_BOOT_JARS += \
     WfdCommon \
-		tcmiface \
 		QPerformance \
+		nubia-vibrate \
     UxPerformance
 
 DERP_BUILDTYPE := CI

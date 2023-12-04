@@ -169,11 +169,11 @@ release() {
 	fi
 }
 
-# initRepos
-# syncRepos
-# applyPatches
-# setupEnv
-# buildGappsVariant
+initRepos
+syncRepos
+applyPatches
+setupEnv
+buildGappsVariant
 # buildVanillaVariant
 # buildMiniVariant
 # buildVndkliteVariant
