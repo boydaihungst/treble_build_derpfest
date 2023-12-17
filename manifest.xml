@@ -16,6 +16,4 @@
   <project path="vendor/lptools" name="phhusson/vendor_lptools" remote="github" revision="master" />
   <project name="boydaihungst/vendor-for-gsi-nx669j" path="vendor/nubia/nx669j" remote="github"
     revision="master" />
-  <project name="boydaihungst/treble_app" path="treble_build_derpfest/treble_app" remote="github"
-    revision="master" />
 </manifest>

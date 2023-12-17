@@ -22,7 +22,7 @@ index 3178a1f756ad..bf23cf7d2efc 100644
              // public API requirement of being in a stable location.
 -            if (vol.disk.isAdoptable()) {
 +	    // Assume all SDs match this as well
-+            if (vol.disk.isAdoptable() || vol.disk.isSd())
++            if (vol.disk.isAdoptable() || vol.disk.isSd()) {
                  vol.mountFlags |= VolumeInfo.MOUNT_FLAG_VISIBLE_FOR_WRITE;
              } else if (vol.disk.isSd()) {
                  vol.mountFlags |= VolumeInfo.MOUNT_FLAG_VISIBLE_FOR_WRITE;

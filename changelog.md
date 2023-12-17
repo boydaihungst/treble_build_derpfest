@@ -1,4 +1,4 @@
-# v2023.11.30
+# v2023.12.17
 
 From now on I will stop build gsi. I only build gsi for testing redmagic 6series.
 It may work on other devices, but not guaranteed.
@@ -8,15 +8,13 @@ Full guide for newbie: [ZTE-Nubia-Red-Magic-6-6-Pro-6s-6s-Pro](https://github.co
 
 ## Change logs
 
-- Smooth display
-- Force peak refresh rate
-- etc
+- Bump to Android 14_r17
 
 ## Bug Fixes
 
 ## Known bugs
 
-- IMS VoLTE VoWIFI won't work
+- IMS VoWIFI won't work
 
 ## Note
 

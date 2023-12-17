@@ -59,16 +59,9 @@ setupEnv() {
 	echo
 }
 
-buildTrebleApp() {
-	echo "--> Building treble app"
-	bash $BL/apply-patches.sh .
-	echo
-
-	echo "--> Generating makefiles"
-	cp $BL/derpfest.mk ./device/phh/treble/
-	pushd ./device/phh/treble/ &>/dev/null
-	bash generate.sh derpfest
-	popd &>/dev/null
+copyTrebleApp() {
+	echo "--> Copying treble app"
+  cp $BL/TrebleApp.apk vendor/hardware_overlay/TrebleApp/app.apk 
 	echo
 }
 buildGappsVariant() {
@@ -88,7 +81,7 @@ buildMiniVariant() {
 	# make -j$(nproc --all) systemimage
 	# (cd vendor/gms && git reset --hard HEAD~1)
 	# mv $OUT/system.img $BD/system-treble_arm64_bgN-mini.img
-	# echo
+	echo
 }
 
 buildVanillaVariant() {
@@ -181,10 +174,11 @@ release() {
 	fi
 }
 
-initRepos
-syncRepos
-applyPatches
+# initRepos
+# syncRepos
+# applyPatches
 setupEnv
+# copyTrebleApp
 buildGappsVariant
 # buildVanillaVariant
 # buildMiniVariant
