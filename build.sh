@@ -25,7 +25,7 @@ timestamp="$START"
 
 initRepos() {
 	echo "--> Initializing workspace"
-	repo init -u https://github.com/DerpFest-AOSP/manifest -b 14
+	repo init -u https://github.com/DerpFest-AOSP/manifest -b 14 --git-lfs
 	echo
 	echo "--> Preparing local manifest"
 	mkdir -p .repo/local_manifests
@@ -59,6 +59,18 @@ setupEnv() {
 	echo
 }
 
+buildTrebleApp() {
+	echo "--> Building treble app"
+	bash $BL/apply-patches.sh .
+	echo
+
+	echo "--> Generating makefiles"
+	cp $BL/derpfest.mk ./device/phh/treble/
+	pushd ./device/phh/treble/ &>/dev/null
+	bash generate.sh derpfest
+	popd &>/dev/null
+	echo
+}
 buildGappsVariant() {
 	echo "--> Building treble_arm64_bgN"
 	make -j$(nproc --all) installclean
@@ -69,14 +81,14 @@ buildGappsVariant() {
 }
 
 buildMiniVariant() {
-	echo "--> Building treble_arm64_bgN-mini"
-	(cd vendor/gms && git am $BL/patches/mini/platform_vendor_gms/mini-gms.patch)
-	make -j$(nproc --all) installclean
-	lunch treble_arm64_bgN-userdebug
-	make -j$(nproc --all) systemimage
-	(cd vendor/gms && git reset --hard HEAD~1)
-	mv $OUT/system.img $BD/system-treble_arm64_bgN-mini.img
-	echo
+	# echo "--> Building treble_arm64_bgN-mini"
+	# (cd vendor/gms && git am $BL/patches/mini/platform_vendor_gms/mini-gms.patch)
+	# make -j$(nproc --all) installclean
+	# lunch treble_arm64_bgN-userdebug
+	# make -j$(nproc --all) systemimage
+	# (cd vendor/gms && git reset --hard HEAD~1)
+	# mv $OUT/system.img $BD/system-treble_arm64_bgN-mini.img
+	# echo
 }
 
 buildVanillaVariant() {

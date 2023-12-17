@@ -23,7 +23,7 @@ index 42ddf93..ec6a7a4 100644
 +
 +type hal_audio_default, file_type;
 +type vendor_hal_perf_default, domain;
-+allow vendor_hal_perf_default hal_audio_default:dir search;
++allow vendor_hal_perf_default hal_audio_default:dir {search read};
 +
 +dontaudit untrusted_app_32 {wifiscanner_service update_engine_service system_update_service persistent_data_block_service network_score_service}:service_manager find;
 +dontaudit untrusted_app_32 property_socket:sock_file write;

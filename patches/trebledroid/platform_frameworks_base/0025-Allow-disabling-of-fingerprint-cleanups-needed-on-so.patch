@@ -1,26 +1,27 @@
-From f7b7a00195d4a12ed81eeed641a04fac1a58adfa Mon Sep 17 00:00:00 2001
+From c76c4c01b05216fe78db93d6d0d3269e1935fd4b Mon Sep 17 00:00:00 2001
 From: Pierre-Hugues Husson <phh@phh.me>
 Date: Sat, 2 Apr 2022 18:04:01 -0400
-Subject: [PATCH 25/44] Allow disabling of fingerprint cleanups, needed on some
+Subject: [PATCH 25/45] Allow disabling of fingerprint cleanups, needed on some
  Realme devices that cant enumerate
 
 ---
- .../biometrics/sensors/fingerprint/hidl/Fingerprint21.java      | 2 ++
- 1 file changed, 2 insertions(+)
+ .../biometrics/sensors/fingerprint/hidl/Fingerprint21.java     | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/services/core/java/com/android/server/biometrics/sensors/fingerprint/hidl/Fingerprint21.java b/services/core/java/com/android/server/biometrics/sensors/fingerprint/hidl/Fingerprint21.java
-index bd23e8f53cd5..7d5c5d4f19ab 100644
+index cfb6d3ad028d..2c989d3fad3a 100644
 --- a/services/core/java/com/android/server/biometrics/sensors/fingerprint/hidl/Fingerprint21.java
 +++ b/services/core/java/com/android/server/biometrics/sensors/fingerprint/hidl/Fingerprint21.java
-@@ -744,6 +744,8 @@ public class Fingerprint21 implements IHwBinder.DeathRecipient, ServiceProvider
+@@ -750,7 +750,8 @@ public class Fingerprint21 implements IHwBinder.DeathRecipient, ServiceProvider
  
      private void scheduleInternalCleanup(int userId,
              @Nullable ClientMonitorCallback callback) {
+-        if (!mCleanup) {
 +        final boolean mNocleanup = android.os.SystemProperties.getBoolean("persist.sys.phh.fingerprint.nocleanup", false);
-+        if(mNocleanup) return;
-         if (!mCleanup) {
++        if (!mCleanup || mNocleanup) {
              return;
          }
+         mHandler.post(() -> {
 -- 
-2.42.1
+2.43.0
 
